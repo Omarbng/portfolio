@@ -35,8 +35,18 @@ body{
   font-size:clamp(1rem,.95rem + .2vw,1.0625rem);
   line-height:1.55;
   -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
+  /* `clip`, never `hidden`: hidden makes body a scroll container, which stops
+     Lenis driving the page and leaves the wheel dead. clip still crops the
+     oversized wordmark without creating one. */
+  overflow-x:clip;
 }
+
+/* Lenis' own stylesheet, inlined (the CDN only serves us scripts) */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+.lenis.lenis-scrolling iframe{pointer-events:none}
 
 .grain{
   position:fixed; inset:-60%;
@@ -617,6 +627,30 @@ body{
   /* ── smooth scroll ── */
   if (!reduced && window.Lenis) {
     var lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+
+    /* Safety net: if smooth scroll ever fails to move the page, hand control
+       back to the browser. A dead wheel is far worse than losing the easing. */
+    (function guard() {
+      var lastY = window.scrollY, stalls = 0, done = false;
+      window.addEventListener("wheel", function () {
+        if (done) return;
+        var from = window.scrollY;
+        setTimeout(function () {
+          if (done) return;
+          var canScroll = document.documentElement.scrollHeight > window.innerHeight + 8;
+          var moved = Math.abs(window.scrollY - from) > 1 || Math.abs(window.scrollY - lastY) > 1;
+          stalls = (canScroll && !moved) ? stalls + 1 : 0;
+          lastY = window.scrollY;
+          if (stalls >= 3) {
+            done = true;
+            try { lenis.destroy(); } catch (e) {}
+            document.documentElement.classList.remove("lenis", "lenis-smooth", "lenis-scrolling");
+            document.documentElement.style.scrollBehavior = "smooth";
+          }
+        }, 380);
+      }, { passive: true });
+    })();
+
     if (hasGsap) {
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
