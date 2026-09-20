@@ -239,60 +239,9 @@ body{
 .surf--flat .surf__hd{position:static;margin:0 0 .5rem;padding-inline:var(--gutter)}
 .surf--flat .surf__cue{display:none}
 
-/* ─── site walk: one project at a time, its real page scrolling ─── */
-.walk{--n:7;position:relative;height:calc(var(--n) * 105svh)}
-.walk__stage{
-  position:sticky;top:0;height:100svh;overflow:hidden;
-  display:grid;align-items:center;
-  grid-template-columns:1fr;gap:1.5rem;
-  padding:5.5rem var(--gutter) 3rem;
-}
-@media (min-width:900px){
-  .walk__stage{grid-template-columns:.8fr 1.2fr;gap:clamp(2rem,5vw,5rem);padding-block:6rem 4rem}
-}
-.walk__panels{position:relative;min-height:11rem}
-.walk__panel{
-  position:absolute;inset:0;opacity:0;
-  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:.7rem;
-}
-.walk__panel:first-child{opacity:1}
-.walk__idx{margin:0;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.2em;color:var(--sand-ghost)}
-.walk__sector{margin:0;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--olive)}
-.walk__name{margin:0;font-size:clamp(1.9rem,4.6vw,3.4rem);font-weight:800;line-height:1;letter-spacing:-.035em}
-.walk__line{margin:0;max-width:34ch;color:var(--sand-dim);line-height:1.5}
-.walk__frames{position:relative;aspect-ratio:16/10;max-width:100%;justify-self:stretch}
-.walk__frame{
-  position:absolute;inset:0;display:block;overflow:hidden;opacity:0;
-  background:var(--ink-raise);border:1px solid var(--ink-line-soft);
-  box-shadow:0 40px 80px -30px rgba(0,0,0,.9);
-  text-decoration:none;
-}
-.walk__frame:first-child{opacity:1}
-.walk__frame img{position:absolute;top:0;left:0;width:100%;height:auto;display:block;will-change:transform}
-.walk__frame:focus-visible{outline:2px solid var(--olive);outline-offset:4px}
-.walk__tag{
-  position:absolute;right:.8rem;bottom:.8rem;z-index:2;
-  padding:.35rem .6rem;background:rgba(8,8,7,.74);backdrop-filter:blur(6px);
-  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--sand);
-}
-/* reduced motion / no GSAP: a plain stack that still reads and still links */
-.walk--flat{height:auto}
-.walk--flat .walk__stage{position:static;height:auto;display:block;overflow:visible}
-.walk--flat .walk__panels{min-height:0;margin-bottom:1rem}
-.walk--flat .walk__panel{position:relative;opacity:1;margin-bottom:2rem}
-.walk--flat .walk__frames{aspect-ratio:auto;height:auto}
-.walk--flat .walk__frame{position:relative;opacity:1;aspect-ratio:16/10;margin-bottom:2rem}
-
 /* ─── footer ─── */
 .foot{padding-block:clamp(4rem,9vw,7rem) 0}
 .foot__top{display:flex;flex-wrap:wrap;gap:2rem 3rem;justify-content:space-between;padding-bottom:clamp(3rem,7vw,5rem)}
-.foot__links{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.55rem}
-.foot__links a{
-  font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
-  color:var(--sand-dim);text-decoration:none;transition:color .3s;
-}
-.foot__links a:hover,.foot__links a:focus-visible{color:var(--sand-bright)}
 .foot__contact{display:flex;flex-direction:column;align-items:flex-start;gap:1.5rem}
 .foot__note{
   margin:0;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.17em;
@@ -376,97 +325,8 @@ body{
     </div>
   </section>
 
-  <section class="walk" id="walk">
-    <div class="walk__stage">
-      <div class="walk__panels">
-        <div class="walk__panel">
-          <p class="walk__idx">01 / 07</p>
-          <p class="walk__sector">Commodity trading</p>
-          <h3 class="walk__name">Arminak Caravan</h3>
-          <p class="walk__line">Agricultural commodities and foodstuff, sourced at origin and delivered to ports worldwide.</p>
-        </div>
-        <div class="walk__panel">
-          <p class="walk__idx">02 / 07</p>
-          <p class="walk__sector">Real estate — Dubai</p>
-          <h3 class="walk__name">Ariana Integrity</h3>
-          <p class="walk__line">A consultancy site with an admin panel and a full Zoho CRM behind it.</p>
-        </div>
-        <div class="walk__panel">
-          <p class="walk__idx">03 / 07</p>
-          <p class="walk__sector">Real estate — global</p>
-          <h3 class="walk__name">Nur Elite Properties</h3>
-          <p class="walk__line">Founder-led investment advisory, image and video-led throughout.</p>
-        </div>
-        <div class="walk__panel">
-          <p class="walk__idx">04 / 07</p>
-          <p class="walk__sector">AI copilot — architecture</p>
-          <h3 class="walk__name">EZ-ARCHI</h3>
-          <p class="walk__line">Drop client documents in, get a ready-to-sign architect contract out.</p>
-        </div>
-        <div class="walk__panel">
-          <p class="walk__idx">05 / 07</p>
-          <p class="walk__sector">Festival microsite</p>
-          <h3 class="walk__name">Locals District</h3>
-          <p class="walk__line">Three hero directions for a 2026 tech-fest microsite. One will live.</p>
-        </div>
-        <div class="walk__panel">
-          <p class="walk__idx">06 / 07</p>
-          <p class="walk__sector">Artist portfolio — music</p>
-          <h3 class="walk__name">Jinie Bhatnagar</h3>
-          <p class="walk__line">DJ and producer. One fixed WebGL canvas running behind every section.</p>
-        </div>
-        <div class="walk__panel">
-          <p class="walk__idx">07 / 07</p>
-          <p class="walk__sector">Voice AI — live demo</p>
-          <h3 class="walk__name">EVA</h3>
-          <p class="walk__line">A voice agent you can actually talk to. Press start and speak.</p>
-        </div>
-      </div>
-      <div class="walk__frames">
-        <a class="walk__frame" href="https://arminakcaravantrading.com/" target="_blank" rel="noopener" aria-label="Open Arminak Caravan in a new tab">
-          <span class="walk__tag">Visit ↗</span>
-          <img src="img/strip_arminak.jpg" alt="Arminak Caravan — the site scrolling from top to bottom" loading="lazy">
-        </a>
-        <a class="walk__frame" href="https://www.arianaintegrity.com/" target="_blank" rel="noopener" aria-label="Open Ariana Integrity in a new tab">
-          <span class="walk__tag">Visit ↗</span>
-          <img src="img/strip_ariana.jpg" alt="Ariana Integrity — the site scrolling from top to bottom" loading="lazy">
-        </a>
-        <a class="walk__frame" href="https://nurelite.properties/" target="_blank" rel="noopener" aria-label="Open Nur Elite Properties in a new tab">
-          <span class="walk__tag">Visit ↗</span>
-          <img src="img/strip_nurelite.jpg" alt="Nur Elite Properties — the site scrolling from top to bottom" loading="lazy">
-        </a>
-        <a class="walk__frame" href="https://ez-archi.vercel.app" target="_blank" rel="noopener" aria-label="Open EZ-ARCHI in a new tab">
-          <span class="walk__tag">Visit ↗</span>
-          <img src="img/strip_ezarchi.jpg" alt="EZ-ARCHI — the site scrolling from top to bottom" loading="lazy">
-        </a>
-        <a class="walk__frame" href="https://locals-district.vercel.app" target="_blank" rel="noopener" aria-label="Open Locals District in a new tab">
-          <span class="walk__tag">Visit ↗</span>
-          <img src="img/strip_locals.jpg" alt="Locals District — the site scrolling from top to bottom" loading="lazy">
-        </a>
-        <a class="walk__frame" href="https://omarjnbz.github.io/Jinie-Portfolio/" target="_blank" rel="noopener" aria-label="Open Jinie Bhatnagar in a new tab">
-          <span class="walk__tag">Visit ↗</span>
-          <img src="img/strip_jinie.jpg" alt="Jinie Bhatnagar — the site scrolling from top to bottom" loading="lazy">
-        </a>
-        <a class="walk__frame" href="https://bng-eva.vercel.app" target="_blank" rel="noopener" aria-label="Open EVA in a new tab">
-          <span class="walk__tag">Visit ↗</span>
-          <img src="img/strip_bngeva.jpg" alt="EVA — the site scrolling from top to bottom" loading="lazy">
-        </a>
-      </div>
-    </div>
-  </section>
-
   <section class="foot wrap">
     <div class="foot__top">
-      <ul class="foot__links">
-        <li><a href="https://arminakcaravantrading.com/" target="_blank" rel="noopener">Arminak Caravan ↗</a></li>
-        <li><a href="https://www.arianaintegrity.com/" target="_blank" rel="noopener">Ariana Integrity ↗</a></li>
-        <li><a href="https://nurelite.properties/" target="_blank" rel="noopener">Nur Elite Properties ↗</a></li>
-        <li><a href="https://ez-archi.vercel.app" target="_blank" rel="noopener">EZ-ARCHI ↗</a></li>
-        <li><a href="https://locals-district.vercel.app" target="_blank" rel="noopener">Locals District ↗</a></li>
-        <li><a href="https://omarjnbz.github.io/Jinie-Portfolio/" target="_blank" rel="noopener">Jinie Bhatnagar ↗</a></li>
-        <li><a href="https://bng-eva.vercel.app" target="_blank" rel="noopener">EVA ↗</a></li>
-        <li><a href="https://ahmad-opal.vercel.app" target="_blank" rel="noopener">Screenr ↗</a></li>
-      </ul>
       <div class="foot__contact">
         <p class="foot__note">Every build on this page is live. Nothing here is a mockup.</p>
         <a class="visit" href="mailto:Omarjnbz@gmail.com">Omarjnbz@gmail.com <span>↗</span></a>
@@ -594,56 +454,6 @@ body{
     .from(".hero__cue", { opacity: 0, duration: .8, ease: "power2.out" }, "-=.5");
 
 
-  /* ── site walk ───────────────────────────────────────────────
-     Each project owns a slice of the section: its real page scrolls
-     inside the frame while the copy beside it cross-fades across. */
-  (function walk() {
-    var sec = document.querySelector(".walk");
-    if (!sec) return;
-    var frames = Array.prototype.slice.call(sec.querySelectorAll(".walk__frame"));
-    var panels = Array.prototype.slice.call(sec.querySelectorAll(".walk__panel"));
-    if (!frames.length) return;
-
-    if (reduced || !hasGsap) { sec.classList.add("walk--flat"); return; }
-
-    var n = frames.length;
-    var FADE = 0.22; /* slice overlap, so one never blinks out before the next arrives */
-
-    function paint(progress) {
-      var p = progress * n;
-      for (var i = 0; i < n; i++) {
-        var d = p - i;
-        var o;
-        if (d < -FADE || d > 1 + FADE) o = 0;
-        else if (d < 0) o = (d + FADE) / FADE;
-        else if (d > 1) o = (1 + FADE - d) / FADE;
-        else o = 1;
-
-        frames[i].style.opacity = o;
-        frames[i].style.zIndex = o > 0.5 ? 2 : 1;
-        panels[i].style.opacity = o;
-
-        if (o > 0) {
-          var img = frames[i].querySelector("img");
-          if (img && img.naturalWidth) {
-            var frameH = frames[i].clientHeight;
-            var renderedH = frames[i].clientWidth * (img.naturalHeight / img.naturalWidth);
-            var travel = Math.min(0, frameH - renderedH);
-            var t = d < 0 ? 0 : d > 1 ? 1 : d;
-            img.style.transform = "translateY(" + (travel * t) + "px)";
-          }
-        }
-      }
-    }
-
-    ScrollTrigger.create({
-      trigger: sec, start: "top top", end: "bottom bottom",
-      scrub: true, invalidateOnRefresh: true,
-      onUpdate: function (self) { paint(self.progress); },
-      onRefresh: function (self) { paint(self.progress); },
-    });
-    paint(0);
-  })();
 
   /* ── 3D project surfer ─────────────────────────────────────────
      Cards sit on a diagonal track in 3D; scrolling flies the camera
