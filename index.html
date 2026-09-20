@@ -35,18 +35,11 @@ body{
   font-size:clamp(1rem,.95rem + .2vw,1.0625rem);
   line-height:1.55;
   -webkit-font-smoothing:antialiased;
-  /* `clip`, never `hidden`: hidden makes body a scroll container, which stops
-     Lenis driving the page and leaves the wheel dead. clip still crops the
-     oversized wordmark without creating one. */
-  overflow-x:clip;
+  /* Deliberately no overflow on body — it propagates to the viewport and has
+     already broken scrolling once. The oversized wordmark is cropped by
+     .hero and .signature, which each carry their own overflow:hidden. */
 }
 
-/* Lenis' own stylesheet, inlined (the CDN only serves us scripts) */
-html.lenis,html.lenis body{height:auto}
-.lenis.lenis-smooth{scroll-behavior:auto!important}
-.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
-.lenis.lenis-stopped{overflow:hidden}
-.lenis.lenis-scrolling iframe{pointer-events:none}
 
 .grain{
   position:fixed; inset:-60%;
@@ -509,7 +502,6 @@ html.lenis,html.lenis body{height:auto}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
 <script>
 (function () {
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -624,47 +616,18 @@ html.lenis,html.lenis body{height:auto}
     }
   })();
 
-  /* ── smooth scroll ── */
-  if (!reduced && window.Lenis) {
-    var lenis = new Lenis({ duration: 1.15, smoothWheel: true });
-
-    /* Safety net: if smooth scroll ever fails to move the page, hand control
-       back to the browser. A dead wheel is far worse than losing the easing. */
-    (function guard() {
-      var lastY = window.scrollY, stalls = 0, done = false;
-      window.addEventListener("wheel", function () {
-        if (done) return;
-        var from = window.scrollY;
-        setTimeout(function () {
-          if (done) return;
-          var canScroll = document.documentElement.scrollHeight > window.innerHeight + 8;
-          var moved = Math.abs(window.scrollY - from) > 1 || Math.abs(window.scrollY - lastY) > 1;
-          stalls = (canScroll && !moved) ? stalls + 1 : 0;
-          lastY = window.scrollY;
-          if (stalls >= 3) {
-            done = true;
-            try { lenis.destroy(); } catch (e) {}
-            document.documentElement.classList.remove("lenis", "lenis-smooth", "lenis-scrolling");
-            document.documentElement.style.scrollBehavior = "smooth";
-          }
-        }, 380);
-      }, { passive: true });
-    })();
-
-    if (hasGsap) {
-      lenis.on("scroll", ScrollTrigger.update);
-      gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
-      gsap.ticker.lagSmoothing(0);
-    } else {
-      requestAnimationFrame(function loop(t) { lenis.raf(t); requestAnimationFrame(loop); });
-    }
-    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-      a.addEventListener("click", function (e) {
-        var el = document.querySelector(a.getAttribute("href"));
-        if (el) { e.preventDefault(); lenis.scrollTo(el, { offset: -60 }); }
-      });
+  /* Native scrolling. Lenis was hijacking the wheel here and never driving the
+     page, which left the site completely unscrollable — the easing is not worth
+     that risk. ScrollTrigger scrubs against native scroll just as well. */
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var el = document.querySelector(a.getAttribute("href"));
+      if (!el) return;
+      e.preventDefault();
+      var y = el.getBoundingClientRect().top + window.scrollY - 60;
+      window.scrollTo({ top: y, behavior: reduced ? "auto" : "smooth" });
     });
-  }
+  });
 
   if (reduced || !hasGsap) return;
 
