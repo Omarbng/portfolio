@@ -170,18 +170,29 @@ body{
   will-change:transform;
 }
 .surf__card img{
-  width:100%; height:100%; display:block;
-  object-fit:cover; object-position:top center;
+  position:absolute; top:0; left:0;
+  width:100%; height:auto; display:block;
   filter:grayscale(.4) brightness(.72);
   transition:filter .5s ease;
+  will-change:transform;
 }
+/* single-screen captures have nothing to scroll — fill the card instead */
+.surf__card.is-static img{height:100%;object-fit:cover;object-position:top center;transform:none!important}
 .surf__card:hover img,.surf__card:focus-visible img{filter:grayscale(0) brightness(1)}
 .surf__card:focus-visible{outline:2px solid var(--olive);outline-offset:4px}
 .surf__meta{
-  position:absolute;left:0;right:0;bottom:0;
-  padding:.85rem .9rem;
-  background:linear-gradient(transparent,rgba(8,8,7,.9));
-  display:flex;flex-direction:column;gap:.2rem;
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:1.6rem .9rem .9rem;
+  background:linear-gradient(transparent,rgba(8,8,7,.94));
+  display:flex;flex-direction:column;gap:.25rem;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .4s ease,transform .4s cubic-bezier(.22,1,.36,1);
+}
+.surf__card:hover .surf__meta,.surf__card:focus-visible .surf__meta{opacity:1;transform:none}
+@media (hover:none){.surf__meta{opacity:1;transform:none}}
+.surf__meta em{
+  font-style:normal;font-size:.72rem;line-height:1.45;
+  color:var(--sand-dim);margin-top:.15rem;
 }
 .surf__meta b{font-size:.92rem;font-weight:700;letter-spacing:-.02em;color:var(--sand-bright)}
 .surf__meta span{
@@ -273,112 +284,6 @@ body{
 .walk--flat .walk__frames{aspect-ratio:auto;height:auto}
 .walk--flat .walk__frame{position:relative;opacity:1;aspect-ratio:16/10;margin-bottom:2rem}
 
-/* ─── work ─── */
-.work{padding-block:clamp(3.5rem,8vw,6rem) 0}
-.work__head{
-  display:flex;align-items:baseline;justify-content:space-between;
-  gap:1rem;flex-wrap:wrap;padding-bottom:1.4rem;border-bottom:var(--rule);
-}
-.work__head--mid{margin-top:clamp(3.5rem,8vw,6rem)}
-.work__head h2{margin:0;font-size:clamp(1.05rem,1.9vw,1.35rem);font-weight:600;letter-spacing:-.015em}
-.work__head span{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sand-ghost)}
-
-.row{
-  display:grid;grid-template-columns:1fr;
-  gap:clamp(1.5rem,3.5vw,2.75rem);
-  padding-block:clamp(2.75rem,6vw,4.5rem);
-  border-bottom:var(--rule);
-}
-@media (min-width:900px){
-  .row{grid-template-columns:1.3fr .7fr;align-items:center;gap:clamp(2.5rem,5vw,4.5rem)}
-}
-
-/* the scrolling preview */
-.shot{
-  position:relative;display:block;
-  aspect-ratio:4/3;max-width:100%;overflow:hidden;
-  background:var(--ink-raise);
-  border:1px solid var(--ink-line-soft);
-  text-decoration:none;
-}
-.shot img{
-  position:absolute;top:0;left:0;
-  width:100%;height:auto;display:block;
-  filter:grayscale(.4) brightness(.84);
-  transform:translateY(0);
-  transition:transform .9s cubic-bezier(.4,0,.2,1), filter .6s ease;
-  will-change:transform;
-}
-@media (hover:hover){
-  .shot:hover img,.shot:focus-visible img{
-    transform:translateY(var(--shift,-60%));
-    filter:grayscale(0) brightness(1);
-    transition:transform 6.5s cubic-bezier(.32,0,.3,1), filter .5s ease;
-  }
-}
-.shot.is-peeking img{
-  transform:translateY(var(--shift,-60%));
-  filter:grayscale(0) brightness(1);
-  transition:transform 7s cubic-bezier(.32,0,.3,1), filter .5s ease;
-}
-/* single-screen designs have nothing to scroll — fill the frame instead */
-.shot.is-static img{height:100%;object-fit:cover;object-position:top center;transform:none}
-.shot.is-static:hover img{transform:none;filter:grayscale(0) brightness(1)}
-.shot.is-static .shot__hint{display:none}
-.shot:focus-visible{outline:2px solid var(--olive);outline-offset:4px}
-
-.shot__live{
-  position:absolute;left:.85rem;top:.85rem;z-index:3;
-  display:flex;align-items:center;gap:.45rem;
-  padding:.36rem .6rem;background:rgba(8,8,7,.74);backdrop-filter:blur(6px);
-  font-family:var(--f-mono);font-size:.52rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--sand);
-}
-.shot__live i{width:5px;height:5px;border-radius:50%;background:var(--live);flex:none}
-@media (prefers-reduced-motion:no-preference){
-  .shot__live i{animation:pulse 2.2s ease-in-out infinite}
-}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.28}}
-
-.shot__hint{
-  position:absolute;right:.85rem;bottom:.85rem;z-index:3;
-  padding:.36rem .6rem;background:rgba(8,8,7,.74);backdrop-filter:blur(6px);
-  font-family:var(--f-mono);font-size:.52rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--sand-dim);
-  opacity:1;transition:opacity .4s ease;
-}
-@media (hover:hover){.shot:hover .shot__hint{opacity:0}}
-@media (hover:none){.shot__hint{display:none}}
-
-/* side information — kept deliberately light */
-.row__idx{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.2em;color:var(--sand-ghost);margin:0 0 .7rem}
-.row__sector{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--olive);margin:0 0 .85rem}
-.row__name{margin:0 0 .8rem;font-size:clamp(1.7rem,3.6vw,2.5rem);font-weight:800;line-height:1.04;letter-spacing:-.033em}
-.row__name a{color:inherit;text-decoration:none}
-.row__name a:focus-visible{outline:2px solid var(--olive);outline-offset:6px}
-.row__desc{margin:0 0 1.6rem;max-width:40ch;color:var(--sand-dim);line-height:1.55}
-
-.row__note{margin:0 0 1.7rem;padding-top:1.1rem;border-top:1px solid var(--ink-line-soft)}
-.row__note b{
-  display:block;font-weight:700;font-size:clamp(1rem,1.6vw,1.2rem);
-  letter-spacing:-.02em;color:var(--sand);margin-bottom:.4rem;
-}
-.row__note span{
-  font-family:var(--f-mono);font-size:.58rem;letter-spacing:.13em;
-  line-height:1.8;text-transform:uppercase;color:var(--sand-ghost);
-}
-
-.visit{
-  display:inline-flex;align-items:center;gap:.7rem;
-  font-family:var(--f-mono);font-size:.6rem;letter-spacing:.19em;text-transform:uppercase;
-  color:var(--sand);text-decoration:none;padding-bottom:.45rem;
-  border-bottom:1px solid var(--ink-line);
-  transition:color .3s,border-color .3s,gap .3s;
-}
-.visit:hover,.visit:focus-visible{color:var(--olive-bright);border-color:var(--olive);gap:1.1rem}
-.visit span{transition:transform .3s}
-.visit:hover span{transform:translateX(3px)}
-
 /* ─── footer ─── */
 .foot{padding-block:clamp(4rem,9vw,7rem) 0}
 .foot__top{display:flex;flex-wrap:wrap;gap:2rem 3rem;justify-content:space-between;padding-bottom:clamp(3rem,7vw,5rem)}
@@ -407,7 +312,7 @@ body{
 <header class="hdr">
   <nav class="hdr__right">
     <span class="hdr__count">7 live builds</span>
-    <a href="#work">Work</a>
+    <a href="#surf">Work</a>
   </nav>
 </header>
 
@@ -416,8 +321,8 @@ body{
     <canvas class="hero__bg" data-shader aria-hidden="true"></canvas>
 
     <div class="hero__center" data-hero-copy>
-      <p class="hero__copy">My main work is something else. I build these with AI.</p>
-      <p class="hero__copy">Seven are live right now. Every one opens the real site.</p>
+      <p class="hero__copy">Websites built with AI.</p>
+      <p class="hero__copy">My main work is something else. All seven below are live.</p>
     </div>
 
     <div class="hero__cue" data-hero-copy><span>Scroll</span><i></i></div>
@@ -434,37 +339,37 @@ body{
         <a class="surf__card" style="--i:0" href="https://arminakcaravantrading.com/" target="_blank" rel="noopener">
           <span class="surf__num">01</span>
           <img src="img/strip_arminak.jpg" alt="Arminak Caravan — full page design" loading="lazy">
-          <span class="surf__meta"><b>Arminak Caravan</b><span>Commodity trading · Abu Dhabi</span></span>
+          <span class="surf__meta"><b>Arminak Caravan</b><span>Commodity trading · Abu Dhabi</span><em>Spec-sheet catalogue, trade-corridor map and quotation desk. EN / RU.</em></span>
         </a>
         <a class="surf__card" style="--i:1" href="https://www.arianaintegrity.com/" target="_blank" rel="noopener">
           <span class="surf__num">02</span>
           <img src="img/strip_ariana.jpg" alt="Ariana Integrity — full page design" loading="lazy">
-          <span class="surf__meta"><b>Ariana Integrity</b><span>Real estate · Dubai</span></span>
+          <span class="surf__meta"><b>Ariana Integrity</b><span>Real estate · Dubai</span><em>Admin panel and a full Zoho CRM — the client runs the site without code.</em></span>
         </a>
         <a class="surf__card" style="--i:2" href="https://nurelite.properties/" target="_blank" rel="noopener">
           <span class="surf__num">03</span>
           <img src="img/strip_nurelite.jpg" alt="Nur Elite Properties — full page design" loading="lazy">
-          <span class="surf__meta"><b>Nur Elite Properties</b><span>Real estate · Global</span></span>
+          <span class="surf__meta"><b>Nur Elite Properties</b><span>Real estate · Global</span><em>Off-market collection, image and video-led throughout. EN / RU.</em></span>
         </a>
         <a class="surf__card" style="--i:3" href="https://ez-archi.vercel.app" target="_blank" rel="noopener">
           <span class="surf__num">04</span>
           <img src="img/strip_ezarchi.jpg" alt="EZ-ARCHI — full page design" loading="lazy">
-          <span class="surf__meta"><b>EZ-ARCHI</b><span>AI copilot · Architecture</span></span>
+          <span class="surf__meta"><b>EZ-ARCHI</b><span>AI copilot · Architecture</span><em>Documents in, a ready-to-sign architect contract out.</em></span>
         </a>
         <a class="surf__card" style="--i:4" href="https://locals-district.vercel.app" target="_blank" rel="noopener">
           <span class="surf__num">05</span>
           <img src="img/strip_locals.jpg" alt="Locals District — full page design" loading="lazy">
-          <span class="surf__meta"><b>Locals District</b><span>Festival microsite</span></span>
+          <span class="surf__meta"><b>Locals District</b><span>Festival microsite</span><em>Three hero directions, scroll-transforms, live ticketing.</em></span>
         </a>
         <a class="surf__card" style="--i:5" href="https://omarjnbz.github.io/Jinie-Portfolio/" target="_blank" rel="noopener">
           <span class="surf__num">06</span>
           <img src="img/strip_jinie.jpg" alt="Jinie Bhatnagar — full page design" loading="lazy">
-          <span class="surf__meta"><b>Jinie Bhatnagar</b><span>Artist portfolio · Music</span></span>
+          <span class="surf__meta"><b>Jinie Bhatnagar</b><span>Artist portfolio · Music</span><em>One fixed WebGL canvas running behind every section.</em></span>
         </a>
         <a class="surf__card" style="--i:6" href="https://bng-eva.vercel.app" target="_blank" rel="noopener">
           <span class="surf__num">07</span>
           <img src="img/strip_bngeva.jpg" alt="EVA — full page design" loading="lazy">
-          <span class="surf__meta"><b>EVA</b><span>Voice AI · Live demo</span></span>
+          <span class="surf__meta"><b>EVA</b><span>Voice AI · Live demo</span><em>Press start and talk to it. Speaks 95+ languages.</em></span>
         </a>
         </div>
       </div>
@@ -550,129 +455,6 @@ body{
     </div>
   </section>
 
-  <section class="work wrap" id="work">
-    <div class="work__head">
-      <h2>Client sites</h2>
-      <span>Live domains</span>
-    </div>
-
-    <article class="row">
-      <a class="shot" href="https://arminakcaravantrading.com/" target="_blank" rel="noopener" aria-label="Open Arminak Caravan in a new tab">
-        <span class="shot__live"><i></i> Live</span><span class="shot__hint">Hover to scroll</span>
-        <img src="img/strip_arminak.jpg" alt="Arminak Caravan website, full page — desert caravan hero, product catalogue and trade-corridor map." loading="lazy">
-      </a>
-      <div class="row__body">
-        <p class="row__idx">01 / 07</p>
-        <p class="row__sector">Commodity trading</p>
-        <h3 class="row__name"><a href="https://arminakcaravantrading.com/" target="_blank" rel="noopener">Arminak Caravan</a></h3>
-        <p class="row__desc">Global supply of agricultural commodities and foodstuff, from the Black Sea and Central Asia to ports worldwide.</p>
-        <p class="row__note"><b>Spec-sheet catalogue</b><span>Trade-corridor map · Quotation desk · EN / RU</span></p>
-        <a class="visit" href="https://arminakcaravantrading.com/" target="_blank" rel="noopener">arminakcaravantrading.com <span>↗</span></a>
-      </div>
-    </article>
-
-    <article class="row">
-      <a class="shot" href="https://www.arianaintegrity.com/" target="_blank" rel="noopener" aria-label="Open Ariana Integrity in a new tab">
-        <span class="shot__live"><i></i> Live</span><span class="shot__hint">Hover to scroll</span>
-        <img src="img/strip_ariana.jpg" alt="Ariana Integrity website, full page — Dubai skyline hero, about section and property listings." loading="lazy">
-      </a>
-      <div class="row__body">
-        <p class="row__idx">02 / 07</p>
-        <p class="row__sector">Real estate — Dubai</p>
-        <h3 class="row__name"><a href="https://www.arianaintegrity.com/" target="_blank" rel="noopener">Ariana Integrity</a></h3>
-        <p class="row__desc">A full-service real estate consultancy — and the whole system running behind it.</p>
-        <p class="row__note"><b>Admin panel + Zoho CRM</b><span>The client runs the site, logo up, without code</span></p>
-        <a class="visit" href="https://www.arianaintegrity.com/" target="_blank" rel="noopener">arianaintegrity.com <span>↗</span></a>
-      </div>
-    </article>
-
-    <article class="row">
-      <a class="shot" href="https://nurelite.properties/" target="_blank" rel="noopener" aria-label="Open Nur Elite Properties in a new tab">
-        <span class="shot__live"><i></i> Live</span><span class="shot__hint">Hover to scroll</span>
-        <img src="img/strip_nurelite.jpg" alt="Nur Elite Properties website, full page — night skyline hero, founder section and development collection." loading="lazy">
-      </a>
-      <div class="row__body">
-        <p class="row__idx">03 / 07</p>
-        <p class="row__sector">Real estate — global</p>
-        <h3 class="row__name"><a href="https://nurelite.properties/" target="_blank" rel="noopener">Nur Elite Properties</a></h3>
-        <p class="row__desc">Founder-led investment advisory with off-market access across Dubai, Abu Dhabi, Jeddah and Al Marjan.</p>
-        <p class="row__note"><b>Image and video-led throughout</b><span>The heaviest build of the three · EN / RU</span></p>
-        <a class="visit" href="https://nurelite.properties/" target="_blank" rel="noopener">nurelite.properties <span>↗</span></a>
-      </div>
-    </article>
-
-    <div class="work__head work__head--mid">
-      <h2>Site designs</h2>
-      <span>Live builds</span>
-    </div>
-
-    <article class="row">
-      <a class="shot" href="https://ez-archi.vercel.app" target="_blank" rel="noopener" aria-label="Open EZ-ARCHI in a new tab">
-        <span class="shot__live"><i></i> Live</span><span class="shot__hint">Hover to scroll</span>
-        <img src="img/strip_ezarchi.jpg" alt="EZ-ARCHI website, full page — an AI copilot that turns client documents into architect contracts." loading="lazy">
-      </a>
-      <div class="row__body">
-        <p class="row__idx">04 / 07</p>
-        <p class="row__sector">AI copilot — architecture</p>
-        <h3 class="row__name"><a href="https://ez-archi.vercel.app" target="_blank" rel="noopener">EZ-ARCHI</a></h3>
-        <p class="row__desc">Drop client documents in, get a ready-to-sign architect contract out.</p>
-        <p class="row__note"><b>Document in, contract out</b><span>Light and dark themes</span></p>
-        <a class="visit" href="https://ez-archi.vercel.app" target="_blank" rel="noopener">ez-archi.vercel.app <span>↗</span></a>
-      </div>
-    </article>
-
-    <article class="row">
-      <a class="shot" href="https://locals-district.vercel.app" target="_blank" rel="noopener" aria-label="Open Locals District in a new tab">
-        <span class="shot__live"><i></i> Live</span><span class="shot__hint">Hover to scroll</span>
-        <img src="img/strip_locals.jpg" alt="Locals District website, full page — a concept review presenting three alternative hero directions." loading="lazy">
-      </a>
-      <div class="row__body">
-        <p class="row__idx">05 / 07</p>
-        <p class="row__sector">Festival microsite</p>
-        <h3 class="row__name"><a href="https://locals-district.vercel.app" target="_blank" rel="noopener">Locals District</a></h3>
-        <p class="row__desc">Three hero directions for a 2026 tech-fest microsite. Same shell, same real ticketing — they diverge on what carries the hero.</p>
-        <p class="row__note"><b>Three directions, one will live</b><span>Scroll-transforms · Castle Mandawa, Dec 2026</span></p>
-        <a class="visit" href="https://locals-district.vercel.app" target="_blank" rel="noopener">locals-district.vercel.app <span>↗</span></a>
-      </div>
-    </article>
-
-    <article class="row">
-      <a class="shot" href="https://omarjnbz.github.io/Jinie-Portfolio/" target="_blank" rel="noopener" aria-label="Open the Jinie Bhatnagar site in a new tab">
-        <span class="shot__live"><i></i> Live</span><span class="shot__hint">Hover to scroll</span>
-        <img src="img/strip_jinie.jpg" alt="Jinie Bhatnagar website, full page — a dark DJ portfolio with a WebGL canvas behind the type." loading="lazy">
-      </a>
-      <div class="row__body">
-        <p class="row__idx">06 / 07</p>
-        <p class="row__sector">Artist portfolio — music</p>
-        <h3 class="row__name"><a href="https://omarjnbz.github.io/Jinie-Portfolio/" target="_blank" rel="noopener">Jinie Bhatnagar</a></h3>
-        <p class="row__desc">DJ and producer. House, Afro House, Progressive, Deep House — Delhi to the world.</p>
-        <p class="row__note"><b>WebGL behind every section</b><span>One fixed canvas · Serif and sans pairing</span></p>
-        <a class="visit" href="https://omarjnbz.github.io/Jinie-Portfolio/" target="_blank" rel="noopener">Jinie-Portfolio <span>↗</span></a>
-      </div>
-    </article>
-
-    <div class="work__head work__head--mid">
-      <h2>Voice AI</h2>
-      <span>Live builds</span>
-    </div>
-
-    <article class="row">
-      <a class="shot" href="https://bng-eva.vercel.app" target="_blank" rel="noopener" aria-label="Open the EVA voice AI demo in a new tab">
-        <span class="shot__live"><i></i> Live</span><span class="shot__hint">Hover to scroll</span>
-        <img src="img/strip_bngeva.jpg" alt="EVA voice AI demo, full page — the words I am EVA in white and green on black above a Start button." loading="lazy">
-      </a>
-      <div class="row__body">
-        <p class="row__idx">07 / 07</p>
-        <p class="row__sector">Voice AI — live demo</p>
-        <h3 class="row__name"><a href="https://bng-eva.vercel.app" target="_blank" rel="noopener">EVA</a></h3>
-        <p class="row__desc">A voice agent you can actually talk to. Press start, speak, and it answers.</p>
-        <p class="row__note"><b>Speaks 95+ languages</b><span>Live call UI · Transcript · Call history</span></p>
-        <a class="visit" href="https://bng-eva.vercel.app" target="_blank" rel="noopener">bng-eva.vercel.app <span>↗</span></a>
-      </div>
-    </article>
-
-  </section>
-
   <section class="foot wrap">
     <div class="foot__top">
       <ul class="foot__links">
@@ -704,36 +486,6 @@ body{
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var hasGsap = !!(window.gsap && window.ScrollTrigger);
   if (hasGsap) gsap.registerPlugin(ScrollTrigger);
-
-  /* ── measure each preview so the hover scroll lands exactly at the page foot ── */
-  function measure() {
-    document.querySelectorAll(".shot").forEach(function (shot) {
-      var img = shot.querySelector("img");
-      if (!img || !img.naturalWidth) return;
-      var frameH = shot.clientHeight;
-      var renderedH = shot.clientWidth * (img.naturalHeight / img.naturalWidth);
-      var shift = frameH - renderedH;
-      /* anything that barely overflows isn't worth scrolling — let it fill instead */
-      if (shift > -60) { shot.classList.add("is-static"); shot.style.removeProperty("--shift"); }
-      else { shot.classList.remove("is-static"); shot.style.setProperty("--shift", shift + "px"); }
-    });
-  }
-  window.addEventListener("resize", measure);
-  window.addEventListener("load", measure);
-  document.querySelectorAll(".shot img").forEach(function (img) {
-    if (img.complete) measure(); else img.addEventListener("load", measure);
-  });
-  measure();
-
-  /* touch devices get one automatic pass as the card comes into view */
-  if (window.matchMedia("(hover: none)").matches && "IntersectionObserver" in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { measure(); e.target.classList.add("is-peeking"); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.55 });
-    document.querySelectorAll(".shot").forEach(function (s) { io.observe(s); });
-  }
 
   /* ── animated smoke behind the hero ── */
   (function shader() {
@@ -907,6 +659,33 @@ body{
        horizontal strip — the cards still read and still link out */
     if (reduced || !hasGsap) { surf.classList.add("surf--flat"); return; }
 
+    /* the page inside each card scrolls as you surf past it */
+    var inner = [];
+    function measureCards() {
+      inner.length = 0;
+      for (var i = 0; i < cards.length; i++) {
+        var img = cards[i].querySelector("img");
+        if (!img || !img.naturalWidth) { inner.push(0); continue; }
+        var h = cards[i].clientHeight;
+        var rendered = cards[i].clientWidth * (img.naturalHeight / img.naturalWidth);
+        var travel = h - rendered;
+        if (travel > -24) { cards[i].classList.add("is-static"); inner.push(0); }
+        else { cards[i].classList.remove("is-static"); inner.push(travel); }
+      }
+    }
+    function scrollInner(p) {
+      for (var i = 0; i < cards.length; i++) {
+        if (!inner[i]) continue;
+        var img = cards[i].querySelector("img");
+        if (img) img.style.transform = "translateY(" + (inner[i] * p) + "px)";
+      }
+    }
+    measureCards();
+    surf.querySelectorAll("img").forEach(function (img) {
+      if (!img.complete) img.addEventListener("load", function () { measureCards(); });
+    });
+    window.addEventListener("resize", measureCards);
+
     var cs = getComputedStyle(surf);
     var px = function (name) { return parseFloat(cs.getPropertyValue(name)) || 0; };
     var span = cards.length - 1;
@@ -919,6 +698,8 @@ body{
       scrollTrigger: {
         trigger: surf, start: "top top", end: "bottom bottom",
         scrub: 0.55, invalidateOnRefresh: true,
+        onUpdate: function (self) { scrollInner(self.progress); },
+        onRefresh: function (self) { measureCards(); scrollInner(self.progress); },
       },
     });
 
@@ -944,14 +725,6 @@ body{
     stage.addEventListener("mouseleave", function () { mx = my = -99999; queue(); });
   })();
 
-  /* ── rows ── */
-  gsap.utils.toArray(".row").forEach(function (row) {
-    gsap.from(row.querySelector(".shot"), { y: 52, opacity: 0, duration: 1.05, ease: "power3.out",
-      scrollTrigger: { trigger: row, start: "top 82%" } });
-    gsap.from(row.querySelectorAll(".row__idx, .row__sector, .row__name, .row__desc, .row__note, .visit"),
-      { y: 22, opacity: 0, duration: .8, stagger: .06, ease: "power3.out",
-        scrollTrigger: { trigger: row, start: "top 78%" } });
-  });
 
 })();
 </script>
