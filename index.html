@@ -74,11 +74,10 @@ body{
   position:fixed; left:0; right:0;
   top:env(safe-area-inset-top,0px);
   z-index:100;
-  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  display:flex; align-items:center; justify-content:flex-end; gap:1rem;
   padding:1.15rem var(--gutter);
   mix-blend-mode:difference;
 }
-.hdr__mark{font-weight:900;font-size:.95rem;letter-spacing:.22em;text-transform:uppercase;color:var(--sand-bright)}
 .hdr__right{
   display:flex;align-items:center;gap:clamp(.9rem,2.5vw,2rem);
   font-family:var(--f-mono);font-size:.58rem;letter-spacing:.16em;
@@ -108,8 +107,6 @@ body{
   text-align:center;padding:6rem var(--gutter) 0;
   display:flex;flex-direction:column;align-items:center;gap:clamp(1.6rem,4vw,2.4rem);
 }
-.hero__globe{width:clamp(38px,5vw,54px);height:auto;opacity:.9}
-.hero__globe ellipse,.hero__globe path{fill:none;stroke:var(--sand);stroke-width:1;vector-effect:non-scaling-stroke}
 .hero__copy{
   margin:0;max-width:34ch;
   font-size:clamp(1.02rem,.92rem + .55vw,1.32rem);
@@ -137,26 +134,6 @@ body{
   padding-bottom:calc(env(safe-area-inset-bottom,0px) + .04em);
 }
 
-/* ─── statement ─── */
-.creed{
-  padding-block:clamp(5rem,13vw,10rem);
-  border-bottom:var(--rule);
-  display:grid;grid-template-columns:1fr;gap:clamp(2.5rem,6vw,4rem);
-}
-@media (min-width:900px){.creed{grid-template-columns:.42fr 1fr;gap:clamp(3rem,8vw,7rem)}}
-.creed__aside{display:flex;flex-direction:column;gap:.9rem}
-.creed__rule{height:1px;background:var(--ink-line);margin-bottom:.4rem}
-.creed__num{font-size:clamp(2.6rem,6vw,4.2rem);font-weight:800;line-height:.9;letter-spacing:-.04em;color:var(--sand)}
-.creed__lbl{
-  font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;line-height:1.85;
-  color:var(--sand-dim);max-width:26ch;text-transform:uppercase;
-}
-.creed__body p{
-  margin:0 0 1.1em;font-size:clamp(1.5rem,4.4vw,3.05rem);
-  font-weight:700;line-height:1.14;letter-spacing:-.028em;text-wrap:balance;
-}
-.creed__body p:last-child{margin-bottom:0}
-.creed .w{color:var(--sand);transition:color .16s linear}
 
 /* ─── 3D project surfer ─── */
 .surf{
@@ -250,6 +227,51 @@ body{
 }
 .surf--flat .surf__hd{position:static;margin:0 0 .5rem;padding-inline:var(--gutter)}
 .surf--flat .surf__cue{display:none}
+
+/* ─── site walk: one project at a time, its real page scrolling ─── */
+.walk{--n:7;position:relative;height:calc(var(--n) * 105svh)}
+.walk__stage{
+  position:sticky;top:0;height:100svh;overflow:hidden;
+  display:grid;align-items:center;
+  grid-template-columns:1fr;gap:1.5rem;
+  padding:5.5rem var(--gutter) 3rem;
+}
+@media (min-width:900px){
+  .walk__stage{grid-template-columns:.8fr 1.2fr;gap:clamp(2rem,5vw,5rem);padding-block:6rem 4rem}
+}
+.walk__panels{position:relative;min-height:11rem}
+.walk__panel{
+  position:absolute;inset:0;opacity:0;
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:.7rem;
+}
+.walk__panel:first-child{opacity:1}
+.walk__idx{margin:0;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.2em;color:var(--sand-ghost)}
+.walk__sector{margin:0;font-family:var(--f-mono);font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--olive)}
+.walk__name{margin:0;font-size:clamp(1.9rem,4.6vw,3.4rem);font-weight:800;line-height:1;letter-spacing:-.035em}
+.walk__line{margin:0;max-width:34ch;color:var(--sand-dim);line-height:1.5}
+.walk__frames{position:relative;aspect-ratio:16/10;max-width:100%;justify-self:stretch}
+.walk__frame{
+  position:absolute;inset:0;display:block;overflow:hidden;opacity:0;
+  background:var(--ink-raise);border:1px solid var(--ink-line-soft);
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.9);
+  text-decoration:none;
+}
+.walk__frame:first-child{opacity:1}
+.walk__frame img{position:absolute;top:0;left:0;width:100%;height:auto;display:block;will-change:transform}
+.walk__frame:focus-visible{outline:2px solid var(--olive);outline-offset:4px}
+.walk__tag{
+  position:absolute;right:.8rem;bottom:.8rem;z-index:2;
+  padding:.35rem .6rem;background:rgba(8,8,7,.74);backdrop-filter:blur(6px);
+  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--sand);
+}
+/* reduced motion / no GSAP: a plain stack that still reads and still links */
+.walk--flat{height:auto}
+.walk--flat .walk__stage{position:static;height:auto;display:block;overflow:visible}
+.walk--flat .walk__panels{min-height:0;margin-bottom:1rem}
+.walk--flat .walk__panel{position:relative;opacity:1;margin-bottom:2rem}
+.walk--flat .walk__frames{aspect-ratio:auto;height:auto}
+.walk--flat .walk__frame{position:relative;opacity:1;aspect-ratio:16/10;margin-bottom:2rem}
 
 /* ─── work ─── */
 .work{padding-block:clamp(3.5rem,8vw,6rem) 0}
@@ -383,7 +405,6 @@ body{
 <div class="grain" aria-hidden="true"></div>
 
 <header class="hdr">
-  <div class="hdr__mark">Omar</div>
   <nav class="hdr__right">
     <span class="hdr__count">7 live builds</span>
     <a href="#work">Work</a>
@@ -395,32 +416,13 @@ body{
     <canvas class="hero__bg" data-shader aria-hidden="true"></canvas>
 
     <div class="hero__center" data-hero-copy>
-      <svg class="hero__globe" viewBox="0 0 64 44" aria-hidden="true">
-        <ellipse cx="32" cy="22" rx="30" ry="14"/>
-        <ellipse cx="32" cy="22" rx="30" ry="5"/>
-        <ellipse cx="32" cy="22" rx="12" ry="14"/>
-        <ellipse cx="32" cy="22" rx="23" ry="14"/>
-        <path d="M2 22h60"/>
-      </svg>
-      <p class="hero__copy">I design and build websites — commodity traders, property firms, architects, photographers, musicians.</p>
-      <p class="hero__copy">Seven are live right now. Every project below opens the real site.</p>
+      <p class="hero__copy">My main work is something else. I build these with AI.</p>
+      <p class="hero__copy">Seven are live right now. Every one opens the real site.</p>
     </div>
 
     <div class="hero__cue" data-hero-copy><span>Scroll</span><i></i></div>
 
     <div class="hero__name" data-hero-name><h1>OMAR</h1></div>
-  </section>
-
-  <section class="creed wrap">
-    <div class="creed__aside">
-      <div class="creed__rule"></div>
-      <div class="creed__num">7</div>
-      <p class="creed__lbl">Live builds — client sites, site designs and voice AI</p>
-    </div>
-    <div class="creed__body">
-      <p data-creed>Every project on this page is live and working. Hover one and it scrolls, so you see the whole design before you click.</p>
-      <p data-creed>Nothing here is a concept, and nothing here is a mockup.</p>
-    </div>
   </section>
 
   <section class="surf" id="surf">
@@ -465,6 +467,85 @@ body{
           <span class="surf__meta"><b>EVA</b><span>Voice AI · Live demo</span></span>
         </a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="walk" id="walk">
+    <div class="walk__stage">
+      <div class="walk__panels">
+        <div class="walk__panel">
+          <p class="walk__idx">01 / 07</p>
+          <p class="walk__sector">Commodity trading</p>
+          <h3 class="walk__name">Arminak Caravan</h3>
+          <p class="walk__line">Agricultural commodities and foodstuff, sourced at origin and delivered to ports worldwide.</p>
+        </div>
+        <div class="walk__panel">
+          <p class="walk__idx">02 / 07</p>
+          <p class="walk__sector">Real estate — Dubai</p>
+          <h3 class="walk__name">Ariana Integrity</h3>
+          <p class="walk__line">A consultancy site with an admin panel and a full Zoho CRM behind it.</p>
+        </div>
+        <div class="walk__panel">
+          <p class="walk__idx">03 / 07</p>
+          <p class="walk__sector">Real estate — global</p>
+          <h3 class="walk__name">Nur Elite Properties</h3>
+          <p class="walk__line">Founder-led investment advisory, image and video-led throughout.</p>
+        </div>
+        <div class="walk__panel">
+          <p class="walk__idx">04 / 07</p>
+          <p class="walk__sector">AI copilot — architecture</p>
+          <h3 class="walk__name">EZ-ARCHI</h3>
+          <p class="walk__line">Drop client documents in, get a ready-to-sign architect contract out.</p>
+        </div>
+        <div class="walk__panel">
+          <p class="walk__idx">05 / 07</p>
+          <p class="walk__sector">Festival microsite</p>
+          <h3 class="walk__name">Locals District</h3>
+          <p class="walk__line">Three hero directions for a 2026 tech-fest microsite. One will live.</p>
+        </div>
+        <div class="walk__panel">
+          <p class="walk__idx">06 / 07</p>
+          <p class="walk__sector">Artist portfolio — music</p>
+          <h3 class="walk__name">Jinie Bhatnagar</h3>
+          <p class="walk__line">DJ and producer. One fixed WebGL canvas running behind every section.</p>
+        </div>
+        <div class="walk__panel">
+          <p class="walk__idx">07 / 07</p>
+          <p class="walk__sector">Voice AI — live demo</p>
+          <h3 class="walk__name">EVA</h3>
+          <p class="walk__line">A voice agent you can actually talk to. Press start and speak.</p>
+        </div>
+      </div>
+      <div class="walk__frames">
+        <a class="walk__frame" href="https://arminakcaravantrading.com/" target="_blank" rel="noopener" aria-label="Open Arminak Caravan in a new tab">
+          <span class="walk__tag">Visit ↗</span>
+          <img src="img/strip_arminak.jpg" alt="Arminak Caravan — the site scrolling from top to bottom" loading="lazy">
+        </a>
+        <a class="walk__frame" href="https://www.arianaintegrity.com/" target="_blank" rel="noopener" aria-label="Open Ariana Integrity in a new tab">
+          <span class="walk__tag">Visit ↗</span>
+          <img src="img/strip_ariana.jpg" alt="Ariana Integrity — the site scrolling from top to bottom" loading="lazy">
+        </a>
+        <a class="walk__frame" href="https://nurelite.properties/" target="_blank" rel="noopener" aria-label="Open Nur Elite Properties in a new tab">
+          <span class="walk__tag">Visit ↗</span>
+          <img src="img/strip_nurelite.jpg" alt="Nur Elite Properties — the site scrolling from top to bottom" loading="lazy">
+        </a>
+        <a class="walk__frame" href="https://ez-archi.vercel.app" target="_blank" rel="noopener" aria-label="Open EZ-ARCHI in a new tab">
+          <span class="walk__tag">Visit ↗</span>
+          <img src="img/strip_ezarchi.jpg" alt="EZ-ARCHI — the site scrolling from top to bottom" loading="lazy">
+        </a>
+        <a class="walk__frame" href="https://locals-district.vercel.app" target="_blank" rel="noopener" aria-label="Open Locals District in a new tab">
+          <span class="walk__tag">Visit ↗</span>
+          <img src="img/strip_locals.jpg" alt="Locals District — the site scrolling from top to bottom" loading="lazy">
+        </a>
+        <a class="walk__frame" href="https://omarjnbz.github.io/Jinie-Portfolio/" target="_blank" rel="noopener" aria-label="Open Jinie Bhatnagar in a new tab">
+          <span class="walk__tag">Visit ↗</span>
+          <img src="img/strip_jinie.jpg" alt="Jinie Bhatnagar — the site scrolling from top to bottom" loading="lazy">
+        </a>
+        <a class="walk__frame" href="https://bng-eva.vercel.app" target="_blank" rel="noopener" aria-label="Open EVA in a new tab">
+          <span class="walk__tag">Visit ↗</span>
+          <img src="img/strip_bngeva.jpg" alt="EVA — the site scrolling from top to bottom" loading="lazy">
+        </a>
       </div>
     </div>
   </section>
@@ -756,28 +837,61 @@ body{
     scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: .4 } });
 
   gsap.timeline({ delay: .15 })
-    .from(".hero__globe", { y: 18, opacity: 0, duration: .9, ease: "power3.out" })
-    .from(".hero__copy", { y: 22, opacity: 0, duration: .95, stagger: .12, ease: "power3.out" }, "-=.6")
+    .from(".hero__copy", { y: 22, opacity: 0, duration: .95, stagger: .12, ease: "power3.out" })
     .from("[data-hero-name] h1", { yPercent: 16, opacity: 0, duration: 1.25, ease: "power3.out" }, "-=.8")
     .from(".hero__cue", { opacity: 0, duration: .8, ease: "power2.out" }, "-=.5");
 
-  /* ── statement words brighten as they pass ── */
-  document.querySelectorAll("[data-creed]").forEach(function (el) {
-    var words = el.textContent.trim().split(/\s+/);
-    el.textContent = "";
-    words.forEach(function (w, i) {
-      var s = document.createElement("span");
-      s.className = "w"; s.textContent = w;
-      el.appendChild(s);
-      if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
-    });
-    gsap.fromTo(el.querySelectorAll(".w"), { color: "#393632" },
-      { color: "#e8e8e3", stagger: .5, ease: "none",
-        scrollTrigger: { trigger: el, start: "top 82%", end: "bottom 55%", scrub: .55 } });
-  });
 
-  gsap.from(".creed__aside > *", { y: 22, opacity: 0, duration: .9, stagger: .09, ease: "power3.out",
-    scrollTrigger: { trigger: ".creed", start: "top 78%" } });
+  /* ── site walk ───────────────────────────────────────────────
+     Each project owns a slice of the section: its real page scrolls
+     inside the frame while the copy beside it cross-fades across. */
+  (function walk() {
+    var sec = document.querySelector(".walk");
+    if (!sec) return;
+    var frames = Array.prototype.slice.call(sec.querySelectorAll(".walk__frame"));
+    var panels = Array.prototype.slice.call(sec.querySelectorAll(".walk__panel"));
+    if (!frames.length) return;
+
+    if (reduced || !hasGsap) { sec.classList.add("walk--flat"); return; }
+
+    var n = frames.length;
+    var FADE = 0.22; /* slice overlap, so one never blinks out before the next arrives */
+
+    function paint(progress) {
+      var p = progress * n;
+      for (var i = 0; i < n; i++) {
+        var d = p - i;
+        var o;
+        if (d < -FADE || d > 1 + FADE) o = 0;
+        else if (d < 0) o = (d + FADE) / FADE;
+        else if (d > 1) o = (1 + FADE - d) / FADE;
+        else o = 1;
+
+        frames[i].style.opacity = o;
+        frames[i].style.zIndex = o > 0.5 ? 2 : 1;
+        panels[i].style.opacity = o;
+
+        if (o > 0) {
+          var img = frames[i].querySelector("img");
+          if (img && img.naturalWidth) {
+            var frameH = frames[i].clientHeight;
+            var renderedH = frames[i].clientWidth * (img.naturalHeight / img.naturalWidth);
+            var travel = Math.min(0, frameH - renderedH);
+            var t = d < 0 ? 0 : d > 1 ? 1 : d;
+            img.style.transform = "translateY(" + (travel * t) + "px)";
+          }
+        }
+      }
+    }
+
+    ScrollTrigger.create({
+      trigger: sec, start: "top top", end: "bottom bottom",
+      scrub: true, invalidateOnRefresh: true,
+      onUpdate: function (self) { paint(self.progress); },
+      onRefresh: function (self) { paint(self.progress); },
+    });
+    paint(0);
+  })();
 
   /* ── 3D project surfer ─────────────────────────────────────────
      Cards sit on a diagonal track in 3D; scrolling flies the camera
