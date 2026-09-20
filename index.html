@@ -144,6 +144,99 @@ body{
 .creed__body p:last-child{margin-bottom:0}
 .creed .w{color:var(--sand);transition:color .16s linear}
 
+/* ─── 3D project surfer ─── */
+.surf{
+  --cw:300px; --ch:400px;
+  --sx:240px; --sy:-84px; --sz:-288px;
+  --cards:7;
+  position:relative;
+  height:calc(100svh + var(--cards) * 58svh);
+}
+.surf__stage{
+  position:sticky; top:0;
+  height:100svh; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+.surf__scene{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  perspective:2000px; perspective-origin:18% 22%;
+}
+.surf__track{position:relative;width:0;height:0;transform-style:preserve-3d}
+.surf__card{
+  position:absolute;
+  width:var(--cw); height:var(--ch);
+  margin-left:calc(var(--cw) / -2); margin-top:calc(var(--ch) / -2);
+  overflow:hidden; text-decoration:none; color:inherit;
+  background:var(--ink-raise);
+  border:1px solid var(--ink-line-soft);
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.8);
+  transform-style:preserve-3d;
+  transform:
+    translate3d(calc(var(--i) * var(--sx)), calc(var(--i) * var(--sy)), calc(var(--i) * var(--sz)))
+    rotateY(-50deg) scale(var(--s,1));
+  transition:transform .5s cubic-bezier(.22,1,.36,1);
+  will-change:transform;
+}
+.surf__card img{
+  width:100%; height:100%; display:block;
+  object-fit:cover; object-position:top center;
+  filter:grayscale(.4) brightness(.72);
+  transition:filter .5s ease;
+}
+.surf__card:hover img,.surf__card:focus-visible img{filter:grayscale(0) brightness(1)}
+.surf__card:focus-visible{outline:2px solid var(--olive);outline-offset:4px}
+.surf__meta{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:.85rem .9rem;
+  background:linear-gradient(transparent,rgba(8,8,7,.9));
+  display:flex;flex-direction:column;gap:.2rem;
+}
+.surf__meta b{font-size:.92rem;font-weight:700;letter-spacing:-.02em;color:var(--sand-bright)}
+.surf__meta span{
+  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--sand-dim);
+}
+.surf__num{
+  position:absolute;top:.6rem;left:.7rem;z-index:2;
+  font-family:var(--f-mono);font-size:.55rem;letter-spacing:.15em;
+  color:var(--sand);opacity:.7;
+}
+.surf__hd{
+  position:absolute;top:clamp(4.5rem,9vw,6rem);left:var(--gutter);
+  z-index:5;pointer-events:none;mix-blend-mode:difference;
+}
+.surf__hd h2{
+  margin:0;font-size:clamp(2rem,6vw,4.6rem);font-weight:900;
+  line-height:.9;letter-spacing:-.045em;color:var(--sand-bright);
+}
+.surf__hd h2 i{
+  font-style:normal;font-family:var(--f-mono);
+  font-size:.26em;vertical-align:top;margin-left:.5rem;letter-spacing:.1em;
+}
+.surf__cue{
+  position:absolute;right:var(--gutter);bottom:clamp(2rem,5vw,3rem);
+  z-index:5;font-family:var(--f-mono);font-size:.55rem;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--sand-dim);
+}
+@media (max-width:760px){
+  .surf{--cw:200px;--ch:270px;--sx:150px;--sy:-52px;--sz:-186px}
+  .surf__scene{perspective:1300px;perspective-origin:24% 26%}
+}
+/* no GSAP, or reduced motion: a plain horizontal strip that still links out */
+.surf--flat{height:auto}
+.surf--flat .surf__stage{position:static;height:auto;overflow:visible;display:block}
+.surf--flat .surf__scene{position:static;perspective:none;display:block}
+.surf--flat .surf__track{
+  display:flex;gap:1rem;width:auto;height:auto;
+  overflow-x:auto;padding:2rem var(--gutter);scroll-snap-type:x mandatory;
+}
+.surf--flat .surf__card{
+  position:relative;margin:0;flex:none;transform:none;scroll-snap-align:start;
+}
+.surf--flat .surf__hd{position:static;margin:0 0 .5rem;padding-inline:var(--gutter)}
+.surf--flat .surf__cue{display:none}
+
 /* ─── work ─── */
 .work{padding-block:clamp(3.5rem,8vw,6rem) 0}
 .work__head{
@@ -312,6 +405,52 @@ body{
     <div class="creed__body">
       <p data-creed>Every project on this page is live and working. Hover one and it scrolls, so you see the whole design before you click.</p>
       <p data-creed>Nothing here is a concept, and nothing here is a mockup.</p>
+    </div>
+  </section>
+
+  <section class="surf" id="surf">
+    <div class="surf__stage">
+      <div class="surf__hd"><h2>SELECTED<br>WORK<i>(07)</i></h2></div>
+      <div class="surf__cue">Scroll to surf</div>
+      <div class="surf__scene">
+        <div class="surf__track">
+        <a class="surf__card" style="--i:0" href="https://arminakcaravantrading.com/" target="_blank" rel="noopener">
+          <span class="surf__num">01</span>
+          <img src="img/strip_arminak.jpg" alt="Arminak Caravan — full page design" loading="lazy">
+          <span class="surf__meta"><b>Arminak Caravan</b><span>Commodity trading · Abu Dhabi</span></span>
+        </a>
+        <a class="surf__card" style="--i:1" href="https://www.arianaintegrity.com/" target="_blank" rel="noopener">
+          <span class="surf__num">02</span>
+          <img src="img/strip_ariana.jpg" alt="Ariana Integrity — full page design" loading="lazy">
+          <span class="surf__meta"><b>Ariana Integrity</b><span>Real estate · Dubai</span></span>
+        </a>
+        <a class="surf__card" style="--i:2" href="https://nurelite.properties/" target="_blank" rel="noopener">
+          <span class="surf__num">03</span>
+          <img src="img/strip_nurelite.jpg" alt="Nur Elite Properties — full page design" loading="lazy">
+          <span class="surf__meta"><b>Nur Elite Properties</b><span>Real estate · Global</span></span>
+        </a>
+        <a class="surf__card" style="--i:3" href="https://ez-archi.vercel.app" target="_blank" rel="noopener">
+          <span class="surf__num">04</span>
+          <img src="img/strip_ezarchi.jpg" alt="EZ-ARCHI — full page design" loading="lazy">
+          <span class="surf__meta"><b>EZ-ARCHI</b><span>AI copilot · Architecture</span></span>
+        </a>
+        <a class="surf__card" style="--i:4" href="https://locals-district.vercel.app" target="_blank" rel="noopener">
+          <span class="surf__num">05</span>
+          <img src="img/strip_locals.jpg" alt="Locals District — full page design" loading="lazy">
+          <span class="surf__meta"><b>Locals District</b><span>Festival microsite</span></span>
+        </a>
+        <a class="surf__card" style="--i:5" href="https://omarjnbz.github.io/Jinie-Portfolio/" target="_blank" rel="noopener">
+          <span class="surf__num">06</span>
+          <img src="img/strip_jinie.jpg" alt="Jinie Bhatnagar — full page design" loading="lazy">
+          <span class="surf__meta"><b>Jinie Bhatnagar</b><span>Artist portfolio · Music</span></span>
+        </a>
+        <a class="surf__card" style="--i:6" href="https://bng-eva.vercel.app" target="_blank" rel="noopener">
+          <span class="surf__num">07</span>
+          <img src="img/strip_bngeva.jpg" alt="EVA — full page design" loading="lazy">
+          <span class="surf__meta"><b>EVA</b><span>Voice AI · Live demo</span></span>
+        </a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -624,6 +763,57 @@ body{
 
   gsap.from(".creed__aside > *", { y: 22, opacity: 0, duration: .9, stagger: .09, ease: "power3.out",
     scrollTrigger: { trigger: ".creed", start: "top 78%" } });
+
+  /* ── 3D project surfer ─────────────────────────────────────────
+     Cards sit on a diagonal track in 3D; scrolling flies the camera
+     along it while the section is stuck to the viewport. */
+  (function surfer() {
+    var surf = document.querySelector(".surf");
+    if (!surf) return;
+    var track = surf.querySelector(".surf__track");
+    var cards = Array.prototype.slice.call(surf.querySelectorAll(".surf__card"));
+    if (!track || !cards.length) return;
+
+    /* without GSAP, or when motion is reduced, fall back to a flat
+       horizontal strip — the cards still read and still link out */
+    if (reduced || !hasGsap) { surf.classList.add("surf--flat"); return; }
+
+    var cs = getComputedStyle(surf);
+    var px = function (name) { return parseFloat(cs.getPropertyValue(name)) || 0; };
+    var span = cards.length - 1;
+
+    gsap.to(track, {
+      x: -span * px("--sx"),
+      y: -span * px("--sy"),
+      z: -span * px("--sz"),
+      ease: "none",
+      scrollTrigger: {
+        trigger: surf, start: "top top", end: "bottom bottom",
+        scrub: 0.55, invalidateOnRefresh: true,
+      },
+    });
+
+    /* magnetic hover: cards swell as the cursor nears them */
+    if (!window.matchMedia("(hover: hover)").matches) return;
+    var stage = surf.querySelector(".surf__stage");
+    var mx = -99999, my = -99999, queued = false;
+
+    function apply() {
+      queued = false;
+      for (var i = 0; i < cards.length; i++) {
+        var r = cards[i].getBoundingClientRect();
+        var dx = mx - (r.left + r.width / 2);
+        var dy = my - (r.top + r.height / 2);
+        var d = Math.sqrt(dx * dx + dy * dy);
+        var scale = d > 420 ? 1 : 1 + (1 - d / 420) * 0.42;
+        cards[i].style.setProperty("--s", scale.toFixed(3));
+      }
+    }
+    function queue() { if (!queued) { queued = true; requestAnimationFrame(apply); } }
+
+    stage.addEventListener("mousemove", function (e) { mx = e.clientX; my = e.clientY; queue(); });
+    stage.addEventListener("mouseleave", function () { mx = my = -99999; queue(); });
+  })();
 
   /* ── rows ── */
   gsap.utils.toArray(".row").forEach(function (row) {
