@@ -16,11 +16,9 @@ of that site, so you see the whole design before clicking through.
 - [EZ-ARCHI](https://ez-archi.vercel.app) — AI copilot for architects
 - [Locals District](https://locals-district.vercel.app) — festival microsite, three hero directions
 - [Jinie Bhatnagar](https://omarjnbz.github.io/Jinie-Portfolio/) — DJ & producer portfolio
-- [August Renner](https://omarjnbz.github.io/AI/) — photographer portfolio
 
-**Voice AI & product**
+**Voice AI**
 - [EVA](https://bng-eva.vercel.app) — live voice agent demo
-- [Screenr](https://ahmad-opal.vercel.app) — AI resume screening
 
 ## Built with
 

@@ -37,7 +37,7 @@ body{
   -webkit-font-smoothing:antialiased;
   /* Deliberately no overflow on body — it propagates to the viewport and has
      already broken scrolling once. The oversized wordmark is cropped by
-     .hero and .signature, which each carry their own overflow:hidden. */
+     .hero, which carries its own overflow:hidden. */
 }
 
 
@@ -264,12 +264,6 @@ body{
   margin:0;font-family:var(--f-mono);font-size:.58rem;letter-spacing:.17em;
   text-transform:uppercase;color:var(--sand-ghost);max-width:22ch;line-height:1.9;
 }
-.signature{overflow:hidden;line-height:.74;padding-bottom:.06em}
-.signature h2{
-  margin:0;font-size:25vw;font-weight:900;letter-spacing:-.05em;
-  color:var(--sand);white-space:nowrap;text-align:center;
-  transform:scaleY(1.05);transform-origin:bottom;
-}
 .colophon{
   display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:space-between;
   padding:1.1rem var(--gutter) calc(env(safe-area-inset-bottom,0px) + 1.4rem);
@@ -283,7 +277,7 @@ body{
 <header class="hdr">
   <div class="hdr__mark">Omar</div>
   <nav class="hdr__right">
-    <span class="hdr__count">9 live builds</span>
+    <span class="hdr__count">7 live builds</span>
     <a href="#work">Work</a>
   </nav>
 </header>
@@ -312,8 +306,8 @@ body{
   <section class="creed wrap">
     <div class="creed__aside">
       <div class="creed__rule"></div>
-      <div class="creed__num">9</div>
-      <p class="creed__lbl">Live builds — client sites, site designs, and voice AI</p>
+      <div class="creed__num">7</div>
+      <p class="creed__lbl">Live builds — client sites, site designs and voice AI</p>
     </div>
     <div class="creed__body">
       <p data-creed>Every project on this page is live and working. Hover one and it scrolls, so you see the whole design before you click.</p>
@@ -333,7 +327,7 @@ body{
         <img src="img/strip_arminak.jpg" alt="Arminak Caravan website, full page — desert caravan hero, product catalogue and trade-corridor map." loading="lazy">
       </a>
       <div class="row__body">
-        <p class="row__idx">01 / 09</p>
+        <p class="row__idx">01 / 07</p>
         <p class="row__sector">Commodity trading</p>
         <h3 class="row__name"><a href="https://arminakcaravantrading.com/" target="_blank" rel="noopener">Arminak Caravan</a></h3>
         <p class="row__desc">Global supply of agricultural commodities and foodstuff, from the Black Sea and Central Asia to ports worldwide.</p>
@@ -348,7 +342,7 @@ body{
         <img src="img/strip_ariana.jpg" alt="Ariana Integrity website, full page — Dubai skyline hero, about section and property listings." loading="lazy">
       </a>
       <div class="row__body">
-        <p class="row__idx">02 / 09</p>
+        <p class="row__idx">02 / 07</p>
         <p class="row__sector">Real estate — Dubai</p>
         <h3 class="row__name"><a href="https://www.arianaintegrity.com/" target="_blank" rel="noopener">Ariana Integrity</a></h3>
         <p class="row__desc">A full-service real estate consultancy — and the whole system running behind it.</p>
@@ -363,7 +357,7 @@ body{
         <img src="img/strip_nurelite.jpg" alt="Nur Elite Properties website, full page — night skyline hero, founder section and development collection." loading="lazy">
       </a>
       <div class="row__body">
-        <p class="row__idx">03 / 09</p>
+        <p class="row__idx">03 / 07</p>
         <p class="row__sector">Real estate — global</p>
         <h3 class="row__name"><a href="https://nurelite.properties/" target="_blank" rel="noopener">Nur Elite Properties</a></h3>
         <p class="row__desc">Founder-led investment advisory with off-market access across Dubai, Abu Dhabi, Jeddah and Al Marjan.</p>
@@ -383,7 +377,7 @@ body{
         <img src="img/strip_ezarchi.jpg" alt="EZ-ARCHI website, full page — an AI copilot that turns client documents into architect contracts." loading="lazy">
       </a>
       <div class="row__body">
-        <p class="row__idx">04 / 09</p>
+        <p class="row__idx">04 / 07</p>
         <p class="row__sector">AI copilot — architecture</p>
         <h3 class="row__name"><a href="https://ez-archi.vercel.app" target="_blank" rel="noopener">EZ-ARCHI</a></h3>
         <p class="row__desc">Drop client documents in, get a ready-to-sign architect contract out.</p>
@@ -398,7 +392,7 @@ body{
         <img src="img/strip_locals.jpg" alt="Locals District website, full page — a concept review presenting three alternative hero directions." loading="lazy">
       </a>
       <div class="row__body">
-        <p class="row__idx">05 / 09</p>
+        <p class="row__idx">05 / 07</p>
         <p class="row__sector">Festival microsite</p>
         <h3 class="row__name"><a href="https://locals-district.vercel.app" target="_blank" rel="noopener">Locals District</a></h3>
         <p class="row__desc">Three hero directions for a 2026 tech-fest microsite. Same shell, same real ticketing — they diverge on what carries the hero.</p>
@@ -413,7 +407,7 @@ body{
         <img src="img/strip_jinie.jpg" alt="Jinie Bhatnagar website, full page — a dark DJ portfolio with a WebGL canvas behind the type." loading="lazy">
       </a>
       <div class="row__body">
-        <p class="row__idx">06 / 09</p>
+        <p class="row__idx">06 / 07</p>
         <p class="row__sector">Artist portfolio — music</p>
         <h3 class="row__name"><a href="https://omarjnbz.github.io/Jinie-Portfolio/" target="_blank" rel="noopener">Jinie Bhatnagar</a></h3>
         <p class="row__desc">DJ and producer. House, Afro House, Progressive, Deep House — Delhi to the world.</p>
@@ -422,23 +416,8 @@ body{
       </div>
     </article>
 
-    <article class="row">
-      <a class="shot" href="https://omarjnbz.github.io/AI/" target="_blank" rel="noopener" aria-label="Open the August Renner site in a new tab">
-        <span class="shot__live"><i></i> Live</span><span class="shot__hint">Hover to scroll</span>
-        <img src="img/strip_august.jpg" alt="August Renner website, full page — a minimal photographer portfolio built around full-bleed images." loading="lazy">
-      </a>
-      <div class="row__body">
-        <p class="row__idx">07 / 09</p>
-        <p class="row__sector">Artist portfolio — photography</p>
-        <h3 class="row__name"><a href="https://omarjnbz.github.io/AI/" target="_blank" rel="noopener">August Renner</a></h3>
-        <p class="row__desc">A photographer's portfolio stripped back to the frame — name, work, contact, nothing competing with the images.</p>
-        <p class="row__note"><b>Image-first, type second</b><span>Minimal editorial layout</span></p>
-        <a class="visit" href="https://omarjnbz.github.io/AI/" target="_blank" rel="noopener">omarjnbz.github.io/AI <span>↗</span></a>
-      </div>
-    </article>
-
     <div class="work__head work__head--mid">
-      <h2>Voice AI &amp; product</h2>
+      <h2>Voice AI</h2>
       <span>Live builds</span>
     </div>
 
@@ -448,7 +427,7 @@ body{
         <img src="img/strip_bngeva.jpg" alt="EVA voice AI demo, full page — the words I am EVA in white and green on black above a Start button." loading="lazy">
       </a>
       <div class="row__body">
-        <p class="row__idx">08 / 09</p>
+        <p class="row__idx">07 / 07</p>
         <p class="row__sector">Voice AI — live demo</p>
         <h3 class="row__name"><a href="https://bng-eva.vercel.app" target="_blank" rel="noopener">EVA</a></h3>
         <p class="row__desc">A voice agent you can actually talk to. Press start, speak, and it answers.</p>
@@ -457,20 +436,6 @@ body{
       </div>
     </article>
 
-    <article class="row">
-      <a class="shot" href="https://ahmad-opal.vercel.app" target="_blank" rel="noopener" aria-label="Open the AI resume screening tool in a new tab">
-        <span class="shot__live"><i></i> Live</span><span class="shot__hint">Hover to scroll</span>
-        <img src="img/strip_screenr.jpg" alt="Screenr, full page — a dark four-step hiring flow across JD Creator, Sourcing, Screening and Reports." loading="lazy">
-      </a>
-      <div class="row__body">
-        <p class="row__idx">09 / 09</p>
-        <p class="row__sector">AI resume screening</p>
-        <h3 class="row__name"><a href="https://ahmad-opal.vercel.app" target="_blank" rel="noopener">Screenr</a></h3>
-        <p class="row__desc">Describe a role in a few lines and it writes the job description, then scores every CV against it.</p>
-        <p class="row__note"><b>JD creator to scored report</b><span>Sourcing · Screening · Reports</span></p>
-        <a class="visit" href="https://ahmad-opal.vercel.app" target="_blank" rel="noopener">ahmad-opal.vercel.app <span>↗</span></a>
-      </div>
-    </article>
   </section>
 
   <section class="foot wrap">
@@ -482,7 +447,6 @@ body{
         <li><a href="https://ez-archi.vercel.app" target="_blank" rel="noopener">EZ-ARCHI ↗</a></li>
         <li><a href="https://locals-district.vercel.app" target="_blank" rel="noopener">Locals District ↗</a></li>
         <li><a href="https://omarjnbz.github.io/Jinie-Portfolio/" target="_blank" rel="noopener">Jinie Bhatnagar ↗</a></li>
-        <li><a href="https://omarjnbz.github.io/AI/" target="_blank" rel="noopener">August Renner ↗</a></li>
         <li><a href="https://bng-eva.vercel.app" target="_blank" rel="noopener">EVA ↗</a></li>
         <li><a href="https://ahmad-opal.vercel.app" target="_blank" rel="noopener">Screenr ↗</a></li>
       </ul>
@@ -494,9 +458,7 @@ body{
   </section>
 </main>
 
-<div class="signature" aria-hidden="true"><h2>OMAR</h2></div>
 <div class="colophon">
-  <span>Built by Omar</span>
   <span>© 2026</span>
 </div>
 
@@ -672,7 +634,5 @@ body{
         scrollTrigger: { trigger: row, start: "top 78%" } });
   });
 
-  gsap.from(".signature h2", { yPercent: 26, opacity: 0, duration: 1.2, ease: "power3.out",
-    scrollTrigger: { trigger: ".signature", start: "top 96%" } });
 })();
 </script>
