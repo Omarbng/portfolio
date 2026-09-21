@@ -135,109 +135,132 @@ body{
 }
 
 
-/* ─── 3D project surfer ─── */
-.surf{
-  --cw:300px; --ch:400px;
-  --sx:240px; --sy:-84px; --sz:-288px;
-  --cards:9;
-  position:relative;
-  height:calc(100svh + var(--cards) * 58svh);
+/* ─── gallery: coverflow ─── */
+.cf{
+  position:relative;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(1.4rem,3vw,2.2rem);
+  padding:clamp(2rem,5vw,3.5rem) var(--gutter);
+  overflow:hidden;
 }
-.surf__stage{
-  position:sticky; top:0;
-  height:100svh; overflow:hidden;
-  display:flex; align-items:center; justify-content:center;
+/* a warm wash instead of the original's purple/blue — it has to sit on the same ground as the rest of the work */
+.cf::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 18% 12%,rgba(140,140,115,.16),transparent 70%),
+    radial-gradient(55% 45% at 84% 78%,rgba(120,110,90,.13),transparent 70%);
 }
-.surf__scene{
-  position:absolute; inset:0;
-  display:flex; align-items:center; justify-content:center;
-  perspective:2000px; perspective-origin:18% 22%;
+
+.cf__head{position:relative;z-index:2;text-align:center;max-width:44ch}
+.cf__eyebrow{
+  margin:0 0 1rem;font-family:var(--f-mono);font-size:.56rem;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--olive);
 }
-.surf__track{position:relative;width:0;height:0;transform-style:preserve-3d}
-.surf__card{
+.cf__head h2{
+  margin:0;font-size:clamp(2rem,5.2vw,3.4rem);font-weight:800;
+  line-height:1.02;letter-spacing:-.035em;text-wrap:balance;
+}
+.cf__head p{margin:.85rem 0 0;color:var(--sand-dim);text-wrap:balance}
+
+/* ── deck ── */
+.cf__stage{
+  position:relative;z-index:2;width:100%;
+  display:flex;align-items:center;justify-content:center;
+  height:clamp(230px,44vh,420px);
+}
+.cf__deck{
+  position:relative;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  perspective:1400px;
+  touch-action:pan-y;
+}
+.cf__card{
   position:absolute;
-  width:var(--cw); height:var(--ch);
-  margin-left:calc(var(--cw) / -2); margin-top:calc(var(--ch) / -2);
-  overflow:hidden; text-decoration:none; color:inherit;
+  width:clamp(260px,42vw,560px);
+  aspect-ratio:16/10;
+  overflow:hidden;border-radius:14px;
   background:var(--ink-raise);
-  border:1px solid var(--ink-line-soft);
-  box-shadow:0 30px 60px -20px rgba(0,0,0,.8);
+  border:1px solid rgba(232,232,227,.1);
+  box-shadow:0 30px 70px -22px rgba(0,0,0,.9);
+  text-decoration:none;color:inherit;
   transform-style:preserve-3d;
-  transform:
-    translate3d(calc(var(--i) * var(--sx)), calc(var(--i) * var(--sy)), calc(var(--i) * var(--sz)))
-    rotateY(-50deg) scale(var(--s,1));
-  transition:transform .5s cubic-bezier(.22,1,.36,1);
+  transition:transform .55s cubic-bezier(.22,1,.36,1),
+             opacity .55s ease, filter .55s ease;
+  will-change:transform,opacity;
+}
+.cf__card img{
+  position:absolute;top:0;left:0;
+  width:100%;height:auto;display:block;
+  transform:translateY(0);
+  transition:transform .55s cubic-bezier(.22,1,.36,1);
   will-change:transform;
 }
-.surf__card img{
-  position:absolute; top:0; left:0;
-  width:100%; height:auto; display:block;
-  filter:grayscale(.4) brightness(.72);
-  transition:filter .5s ease;
-  will-change:transform;
+/* the front card plays its page top to bottom, the way it reads on the landing page */
+.cf__card[data-center="true"] img{transition:transform 6s linear}
+@media (prefers-reduced-motion:reduce){
+  .cf__card img,.cf__card[data-center="true"] img{transition:none;transform:none!important}
 }
-/* single-screen captures have nothing to scroll — fill the card instead */
-.surf__card.is-static img{height:100%;object-fit:cover;object-position:top center;transform:none!important}
-.surf__card:hover img,.surf__card:focus-visible img{filter:grayscale(0) brightness(1)}
-.surf__card:focus-visible{outline:2px solid var(--olive);outline-offset:4px}
-.surf__meta{
-  position:absolute;left:0;right:0;bottom:0;z-index:2;
-  padding:1.6rem .9rem .9rem;
-  background:linear-gradient(transparent,rgba(8,8,7,.94));
-  display:flex;flex-direction:column;gap:.25rem;
-  opacity:0;transform:translateY(10px);
-  transition:opacity .4s ease,transform .4s cubic-bezier(.22,1,.36,1);
+.cf__card::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(200deg,rgba(255,255,255,.07),transparent 42%);
+  pointer-events:none;
 }
-.surf__card:hover .surf__meta,.surf__card:focus-visible .surf__meta{opacity:1;transform:none}
-@media (hover:none){.surf__meta{opacity:1;transform:none}}
-.surf__meta em{
-  font-style:normal;font-size:.72rem;line-height:1.45;
-  color:var(--sand-dim);margin-top:.15rem;
+.cf__card:focus-visible{outline:2px solid var(--olive);outline-offset:5px}
+.cf__card[data-center="true"]{cursor:pointer}
+.cf__badge{
+  position:absolute;left:.6rem;top:.6rem;z-index:2;
+  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.16em;
+  color:var(--sand);opacity:.75;
 }
-.surf__meta b{font-size:.92rem;font-weight:700;letter-spacing:-.02em;color:var(--sand-bright)}
-.surf__meta span{
-  font-family:var(--f-mono);font-size:.5rem;letter-spacing:.17em;
-  text-transform:uppercase;color:var(--sand-dim);
+
+.cf__nav{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:20;
+  width:44px;height:44px;border-radius:50%;
+  display:grid;place-items:center;cursor:pointer;
+  background:rgba(8,8,7,.55);backdrop-filter:blur(8px);
+  border:1px solid rgba(232,232,227,.18);
+  color:var(--sand);
+  transition:background .3s,border-color .3s,transform .3s;
 }
-.surf__num{
-  position:absolute;top:.6rem;left:.7rem;z-index:2;
-  font-family:var(--f-mono);font-size:.55rem;letter-spacing:.15em;
-  color:var(--sand);opacity:.7;
+.cf__nav:hover{background:rgba(8,8,7,.8);border-color:var(--olive)}
+.cf__nav:focus-visible{outline:2px solid var(--olive);outline-offset:3px}
+.cf__nav--prev{left:clamp(.25rem,2vw,2rem)}
+.cf__nav--next{right:clamp(.25rem,2vw,2rem)}
+.cf__nav svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}
+
+/* ── caption ── */
+.cf__meta{
+  position:relative;z-index:2;text-align:center;
+  min-height:8.5rem;display:flex;flex-direction:column;
+  align-items:center;gap:.4rem;
 }
-.surf__hd{
-  position:absolute;top:clamp(4.5rem,9vw,6rem);left:var(--gutter);
-  z-index:5;pointer-events:none;mix-blend-mode:difference;
+.cf__num{margin:0;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.2em;color:var(--sand-ghost)}
+.cf__sector{margin:0;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--olive)}
+.cf__name{margin:0;font-size:clamp(1.4rem,3.2vw,2.1rem);font-weight:800;letter-spacing:-.03em;line-height:1.05}
+.cf__visit{
+  margin-top:.35rem;display:inline-flex;align-items:center;gap:.6rem;
+  font-family:var(--f-mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--sand);text-decoration:none;padding-bottom:.35rem;
+  border-bottom:1px solid var(--ink-line);
+  transition:color .3s,border-color .3s,gap .3s;
 }
-.surf__hd h2{
-  margin:0;font-size:clamp(2rem,6vw,4.6rem);font-weight:900;
-  line-height:.9;letter-spacing:-.045em;color:var(--sand-bright);
+.cf__visit:hover,.cf__visit:focus-visible{color:var(--olive-bright);border-color:var(--olive);gap:1rem}
+.cf__fade{animation:cfIn .45s ease both}
+@keyframes cfIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.cf__dots{position:relative;z-index:2;display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center}
+.cf__dot{
+  width:7px;height:7px;border-radius:50%;padding:0;cursor:pointer;
+  background:var(--sand-ghost);border:0;
+  transition:background .3s,transform .3s;
 }
-.surf__hd h2 i{
-  font-style:normal;font-family:var(--f-mono);
-  font-size:.26em;vertical-align:top;margin-left:.5rem;letter-spacing:.1em;
+.cf__dot[aria-current="true"]{background:var(--olive-bright);transform:scale(1.35)}
+.cf__dot:focus-visible{outline:2px solid var(--olive);outline-offset:3px}
+
+@media (prefers-reduced-motion:reduce){
+  .cf__card{transition:none}
+  .cf__fade{animation:none}
 }
-.surf__cue{
-  position:absolute;right:var(--gutter);bottom:clamp(2rem,5vw,3rem);
-  z-index:5;font-family:var(--f-mono);font-size:.55rem;
-  letter-spacing:.24em;text-transform:uppercase;color:var(--sand-dim);
-}
-@media (max-width:760px){
-  .surf{--cw:200px;--ch:270px;--sx:150px;--sy:-52px;--sz:-186px}
-  .surf__scene{perspective:1300px;perspective-origin:24% 26%}
-}
-/* no GSAP, or reduced motion: a plain horizontal strip that still links out */
-.surf--flat{height:auto}
-.surf--flat .surf__stage{position:static;height:auto;overflow:visible;display:block}
-.surf--flat .surf__scene{position:static;perspective:none;display:block}
-.surf--flat .surf__track{
-  display:flex;gap:1rem;width:auto;height:auto;
-  overflow-x:auto;padding:2rem var(--gutter);scroll-snap-type:x mandatory;
-}
-.surf--flat .surf__card{
-  position:relative;margin:0;flex:none;transform:none;scroll-snap-align:start;
-}
-.surf--flat .surf__hd{position:static;margin:0 0 .5rem;padding-inline:var(--gutter)}
-.surf--flat .surf__cue{display:none}
 
 /* ─── footer ─── */
 .foot{padding-block:clamp(4rem,9vw,7rem) 0}
@@ -261,7 +284,7 @@ body{
 <header class="hdr">
   <nav class="hdr__right">
     <span class="hdr__count">9 live builds</span>
-    <a href="#surf">Work</a>
+    <a href="#work">Work</a>
   </nav>
 </header>
 
@@ -279,60 +302,27 @@ body{
     <div class="hero__name" data-hero-name><h1>OMAR</h1></div>
   </section>
 
-  <section class="surf" id="surf">
-    <div class="surf__stage">
-      <div class="surf__hd"><h2>SELECTED<br>WORK<i>(09)</i></h2></div>
-      <div class="surf__cue">Scroll to surf</div>
-      <div class="surf__scene">
-        <div class="surf__track">
-        <a class="surf__card" style="--i:0" href="https://arminakcaravantrading.com/" target="_blank" rel="noopener">
-          <span class="surf__num">01</span>
-          <img src="img/strip_arminak.jpg" alt="Arminak Caravan — full page design" loading="lazy">
-          <span class="surf__meta"><b>Arminak Caravan</b><span>Commodity trading · Abu Dhabi</span><em>Spec-sheet catalogue, trade-corridor map and quotation desk. EN / RU.</em></span>
-        </a>
-        <a class="surf__card" style="--i:1" href="https://www.arianaintegrity.com/" target="_blank" rel="noopener">
-          <span class="surf__num">02</span>
-          <img src="img/strip_ariana.jpg" alt="Ariana Integrity — full page design" loading="lazy">
-          <span class="surf__meta"><b>Ariana Integrity</b><span>Real estate · Dubai</span><em>Admin panel and a full Zoho CRM — the client runs the site without code.</em></span>
-        </a>
-        <a class="surf__card" style="--i:2" href="https://nurelite.properties/" target="_blank" rel="noopener">
-          <span class="surf__num">03</span>
-          <img src="img/strip_nurelite.jpg" alt="Nur Elite Properties — full page design" loading="lazy">
-          <span class="surf__meta"><b>Nur Elite Properties</b><span>Real estate · Global</span><em>Off-market collection, image and video-led throughout. EN / RU.</em></span>
-        </a>
-        <a class="surf__card" style="--i:3" href="https://ez-archi.vercel.app" target="_blank" rel="noopener">
-          <span class="surf__num">04</span>
-          <img src="img/strip_ezarchi.jpg" alt="EZ-ARCHI — full page design" loading="lazy">
-          <span class="surf__meta"><b>EZ-ARCHI</b><span>AI copilot · Architecture</span><em>Documents in, a ready-to-sign architect contract out.</em></span>
-        </a>
-        <a class="surf__card" style="--i:4" href="https://locals-district.vercel.app" target="_blank" rel="noopener">
-          <span class="surf__num">05</span>
-          <img src="img/strip_locals.jpg" alt="Locals District — full page design" loading="lazy">
-          <span class="surf__meta"><b>Locals District</b><span>Festival microsite</span><em>Three hero directions, scroll-transforms, live ticketing.</em></span>
-        </a>
-        <a class="surf__card" style="--i:5" href="https://unheard-f.vercel.app/" target="_blank" rel="noopener">
-          <span class="surf__num">06</span>
-          <img src="img/strip_unheard.jpg" alt="UNHEARD 2.0 — full page design" loading="lazy">
-          <span class="surf__meta"><b>UNHEARD 2.0</b><span>Festival · Rishikesh</span><em>Three days of music and wellness in the foothills. Sunrise yoga to melodic techno.</em></span>
-        </a>
-        <a class="surf__card" style="--i:6" href="https://omarjnbz.github.io/Jinie-Portfolio/" target="_blank" rel="noopener">
-          <span class="surf__num">07</span>
-          <img src="img/strip_jinie.jpg" alt="Jinie Bhatnagar — full page design" loading="lazy">
-          <span class="surf__meta"><b>Jinie Bhatnagar</b><span>Artist portfolio · Music</span><em>One fixed WebGL canvas running behind every section.</em></span>
-        </a>
-        <a class="surf__card" style="--i:7" href="https://kas-5-h.vercel.app/" target="_blank" rel="noopener">
-          <span class="surf__num">08</span>
-          <img src="img/strip_kash.jpg" alt="KAS5H — full page design" loading="lazy">
-          <span class="surf__meta"><b>KAS5H</b><span>Artist press kit · Music</span><em>Delhi selector and producer. SoundCloud embeds and a downloadable press library.</em></span>
-        </a>
-        <a class="surf__card" style="--i:8" href="https://bng-eva.vercel.app" target="_blank" rel="noopener">
-          <span class="surf__num">09</span>
-          <img src="img/strip_bngeva.jpg" alt="EVA — full page design" loading="lazy">
-          <span class="surf__meta"><b>EVA</b><span>Voice AI · Live demo</span><em>Press start and talk to it. Speaks 95+ languages.</em></span>
-        </a>
-        </div>
-      </div>
+  <section class="cf" id="work">
+    <div class="cf__head">
+      <p class="cf__eyebrow">Selected work</p>
+      <h2>Nine live builds</h2>
+      <p>Each page plays top to bottom in front. Drag, arrow-key or swipe; clicking the front card opens the real site.</p>
     </div>
+
+    <div class="cf__stage">
+      <button class="cf__nav cf__nav--prev" type="button" aria-label="Previous project">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <div class="cf__deck" id="deck" aria-roledescription="carousel"></div>
+
+      <button class="cf__nav cf__nav--next" type="button" aria-label="Next project">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <div class="cf__meta" id="meta" aria-live="polite"></div>
+    <div class="cf__dots" id="dots"></div>
   </section>
 
   <section class="foot wrap">
@@ -465,87 +455,152 @@ body{
 
 
 
-  /* ── 3D project surfer ─────────────────────────────────────────
-     Cards sit on a diagonal track in 3D; scrolling flies the camera
-     along it while the section is stuck to the viewport. */
-  (function surfer() {
-    var surf = document.querySelector(".surf");
-    if (!surf) return;
-    var track = surf.querySelector(".surf__track");
-    var cards = Array.prototype.slice.call(surf.querySelectorAll(".surf__card"));
-    if (!track || !cards.length) return;
 
-    /* without GSAP, or when motion is reduced, fall back to a flat
-       horizontal strip — the cards still read and still link out */
-    if (reduced || !hasGsap) { surf.classList.add("surf--flat"); return; }
 
-    /* the page inside each card scrolls as you surf past it */
-    var inner = [];
-    function measureCards() {
-      inner.length = 0;
-      for (var i = 0; i < cards.length; i++) {
-        var img = cards[i].querySelector("img");
-        if (!img || !img.naturalWidth) { inner.push(0); continue; }
-        var h = cards[i].clientHeight;
-        var rendered = cards[i].clientWidth * (img.naturalHeight / img.naturalWidth);
-        var travel = h - rendered;
-        if (travel > -24) { cards[i].classList.add("is-static"); inner.push(0); }
-        else { cards[i].classList.remove("is-static"); inner.push(travel); }
+})();
+</script>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var P = [
+    ["strip_arminak","Arminak Caravan","Commodity trading · Abu Dhabi","arminakcaravantrading.com","https://arminakcaravantrading.com/"],
+    ["strip_ariana","Ariana Integrity","Real estate · Dubai","arianaintegrity.com","https://www.arianaintegrity.com/"],
+    ["strip_nurelite","Nur Elite Properties","Real estate · Global","nurelite.properties","https://nurelite.properties/"],
+    ["strip_ezarchi","EZ-ARCHI","AI copilot · Architecture","ez-archi.vercel.app","https://ez-archi.vercel.app"],
+    ["strip_locals","Locals District","Festival microsite","locals-district.vercel.app","https://locals-district.vercel.app"],
+    ["strip_unheard","UNHEARD 2.0","Festival · Rishikesh","unheard-f.vercel.app","https://unheard-f.vercel.app/"],
+    ["strip_jinie","Jinie Bhatnagar","Artist portfolio · Music","Jinie-Portfolio","https://omarjnbz.github.io/Jinie-Portfolio/"],
+    ["strip_kash","KAS5H","Artist press kit · Music","kas-5-h.vercel.app","https://kas-5-h.vercel.app/"],
+    ["strip_bngeva","EVA","Voice AI · Live demo","bng-eva.vercel.app","https://bng-eva.vercel.app"]
+  ];
+
+  var deck = document.getElementById("deck");
+  var meta = document.getElementById("meta");
+  var dots = document.getElementById("dots");
+  var n = P.length;
+  var current = 2; /* Nur Elite leads */
+  var cards = [];
+
+  P.forEach(function (p, i) {
+    var a = document.createElement("a");
+    a.className = "cf__card";
+    a.href = p[4];
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.setAttribute("aria-label", "Open " + p[1] + " in a new tab");
+    a.innerHTML = '<span class="cf__badge">' + String(i + 1).padStart(2, "0") + "</span>" +
+                  '<img src="img/' + p[0] + '.jpg" alt="' + p[1] + ' — full page design" loading="lazy">';
+    deck.appendChild(a);
+    cards.push(a);
+
+    var d = document.createElement("button");
+    d.className = "cf__dot";
+    d.type = "button";
+    d.setAttribute("aria-label", "Show " + p[1]);
+    d.addEventListener("click", function () { go(i); });
+    dots.appendChild(d);
+  });
+
+  /* how far round the ring each card sits from the one in front */
+  function offset(i) {
+    var d = i - current;
+    if (d > n / 2) d -= n;
+    if (d < -n / 2) d += n;
+    return d;
+  }
+
+  /* how far each page can travel inside its card */
+  function travelOf(card) {
+    var img = card.querySelector("img");
+    if (!img || !img.naturalWidth) return 0;
+    var rendered = card.clientWidth * (img.naturalHeight / img.naturalWidth);
+    var t = card.clientHeight - rendered;
+    return t < -12 ? t : 0;
+  }
+
+  function layout() {
+    cards.forEach(function (card, i) {
+      var pos = offset(i);
+      var abs = Math.abs(pos);
+      var visible = abs <= 2;
+      var scale = abs === 0 ? 1 : abs === 1 ? 0.84 : 0.7;
+      var opacity = abs === 0 ? 1 : abs === 1 ? 0.45 : 0.18;
+
+      card.style.transform =
+        "translateX(" + pos * 52 + "%) scale(" + scale + ") rotateY(" + pos * -12 + "deg)";
+      card.style.opacity = visible ? opacity : 0;
+      card.style.filter = abs === 0 ? "none" : "blur(" + (abs * 2.5) + "px) grayscale(.35)";
+      card.style.zIndex = String(20 - abs);
+      card.style.visibility = visible ? "visible" : "hidden";
+      card.setAttribute("data-center", abs === 0 ? "true" : "false");
+      card.tabIndex = abs === 0 ? 0 : -1;
+      /* only the front card should be clickable — the others are scenery */
+      card.style.pointerEvents = abs === 0 ? "auto" : "none";
+
+      var img = card.querySelector("img");
+      if (img) {
+        /* front card plays its page; the rest sit back at the top */
+        img.style.transform = abs === 0 ? "translateY(" + travelOf(card) + "px)" : "translateY(0)";
       }
-    }
-    function scrollInner(p) {
-      for (var i = 0; i < cards.length; i++) {
-        if (!inner[i]) continue;
-        var img = cards[i].querySelector("img");
-        if (img) img.style.transform = "translateY(" + (inner[i] * p) + "px)";
-      }
-    }
-    measureCards();
-    surf.querySelectorAll("img").forEach(function (img) {
-      if (!img.complete) img.addEventListener("load", function () { measureCards(); });
     });
-    window.addEventListener("resize", measureCards);
 
-    var cs = getComputedStyle(surf);
-    var px = function (name) { return parseFloat(cs.getPropertyValue(name)) || 0; };
-    var span = cards.length - 1;
+    var p = P[current];
+    meta.innerHTML =
+      '<p class="cf__num">' + String(current + 1).padStart(2, "0") + " / 0" + n + "</p>" +
+      '<p class="cf__sector">' + p[2] + "</p>" +
+      '<h2 class="cf__name">' + p[1] + "</h2>" +
+      '<a class="cf__visit" href="' + p[4] + '" target="_blank" rel="noopener">' + p[3] + " <span>↗</span></a>";
+    if (!reduced) meta.firstChild.parentNode.classList.add("cf__fade");
 
-    gsap.to(track, {
-      x: -span * px("--sx"),
-      y: -span * px("--sy"),
-      z: -span * px("--sz"),
-      ease: "none",
-      scrollTrigger: {
-        trigger: surf, start: "top top", end: "bottom bottom",
-        scrub: 0.55, invalidateOnRefresh: true,
-        onUpdate: function (self) { scrollInner(self.progress); },
-        onRefresh: function (self) { measureCards(); scrollInner(self.progress); },
-      },
+    Array.prototype.forEach.call(dots.children, function (d, i) {
+      d.setAttribute("aria-current", i === current ? "true" : "false");
     });
+  }
 
-    /* magnetic hover: cards swell as the cursor nears them */
-    if (!window.matchMedia("(hover: hover)").matches) return;
-    var stage = surf.querySelector(".surf__stage");
-    var mx = -99999, my = -99999, queued = false;
+  function go(i) { current = ((i % n) + n) % n; layout(); }
+  function next() { go(current + 1); }
+  function prev() { go(current - 1); }
 
-    function apply() {
-      queued = false;
-      for (var i = 0; i < cards.length; i++) {
-        var r = cards[i].getBoundingClientRect();
-        var dx = mx - (r.left + r.width / 2);
-        var dy = my - (r.top + r.height / 2);
-        var d = Math.sqrt(dx * dx + dy * dy);
-        var scale = d > 420 ? 1 : 1 + (1 - d / 420) * 0.42;
-        cards[i].style.setProperty("--s", scale.toFixed(3));
-      }
-    }
-    function queue() { if (!queued) { queued = true; requestAnimationFrame(apply); } }
+  document.querySelector(".cf__nav--next").addEventListener("click", function () { next(); hold(); });
+  document.querySelector(".cf__nav--prev").addEventListener("click", function () { prev(); hold(); });
 
-    stage.addEventListener("mousemove", function (e) { mx = e.clientX; my = e.clientY; queue(); });
-    stage.addEventListener("mouseleave", function () { mx = my = -99999; queue(); });
-  })();
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight") { next(); hold(); }
+    if (e.key === "ArrowLeft") { prev(); hold(); }
+  });
 
+  /* drag / swipe */
+  var down = null;
+  deck.addEventListener("pointerdown", function (e) { down = e.clientX; hold(); });
+  window.addEventListener("pointerup", function (e) {
+    if (down === null) return;
+    var dx = e.clientX - down;
+    if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
+    down = null;
+  });
 
+  /* gentle auto-advance, but it yields the moment anyone touches it */
+  var timer = null, paused = false;
+  function tick() { if (!paused) next(); }
+  function start() { if (!reduced && !timer) timer = setInterval(tick, 6500); }
+  function stop() { clearInterval(timer); timer = null; }
+  function hold() { stop(); setTimeout(start, 9000); }
+
+  deck.addEventListener("mouseenter", function () { paused = true; });
+  deck.addEventListener("mouseleave", function () { paused = false; });
+  document.addEventListener("visibilitychange", function () {
+    document.hidden ? stop() : start();
+  });
+
+  layout();
+  cards.forEach(function (c) {
+    var img = c.querySelector("img");
+    if (img && !img.complete) img.addEventListener("load", layout);
+  });
+  window.addEventListener("resize", layout);
+  start();
 })();
 </script>
 </body>

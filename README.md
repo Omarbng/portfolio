@@ -2,8 +2,8 @@
 
 Portfolio of nine live websites — commodity trading, real estate, festivals, artist sites and voice AI.
 
-All nine sit on a 3D track you scroll through. Each card holds a full-page capture that scrolls as
-you surf past it, and reveals what was built on hover.
+All nine sit in a coverflow gallery. The card in front plays its real page top to bottom; drag,
+arrow-key or swipe between them, and clicking the front card opens the live site.
 
 ## Projects
 
